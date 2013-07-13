@@ -99,7 +99,14 @@ def strnum2words(strnumber):
         group -= 1
     return words
 
+def ordinal(nubmer):
+    words = strnum2words(nubmer)
+    if words[-2:] == u'سه':
+        return words[:-2] + u'سوم'
+    else:
+        return words + u'م'
                      
 while True:
     number = raw_input('Enter your number plz:\n')
     print strnum2words(number)
+    print ordinal(number)
