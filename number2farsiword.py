@@ -83,25 +83,25 @@ def _three_digit_words(threedigit):
     return words + YEKAN[yekan]
 
 
-def cardinal(strnumber):
-    if int(strnumber) == 0:
+def cardinal(digits: str):
+    if int(digits) == 0:
         return 'صفر'
 
-    if len(strnumber) > len(SCALE) * 3:
+    if len(digits) > len(SCALE) * 3:
         raise ValueError('out of range')
 
-    length = len(strnumber)
+    length = len(digits)
 
     modulo_3 = length % 3
     if modulo_3:
-        strnumber = '0' * (3 - modulo_3) + strnumber
+        digits = '0' * (3 - modulo_3) + digits
         length += 3 - modulo_3
 
     groups = length // 3
     words = ''
     group = groups
     while group > 0:
-        three_digit = strnumber[group * 3 - 3:group * 3]
+        three_digit = digits[group * 3 - 3:group * 3]
         word3 = _three_digit_words(three_digit)
         if word3 and group != groups:
             if words == '':
@@ -114,9 +114,9 @@ def cardinal(strnumber):
     return words
 
 
-def ordinal(number):
-    """Return the ordinal form of the number converted to words."""
-    words = cardinal(number)
+def ordinal(digits: str):
+    """Return the ordinal form of the digits converted to words."""
+    words = cardinal(digits)
     if words[-2:] == 'سه':
         return words[:-2] + 'سوم'
     return words + 'م'
@@ -124,6 +124,6 @@ def ordinal(number):
 
 if __name__ == '__main__':
     while True:
-        n = input('Enter your number plz:\n')
+        n = input('Enter your number:\n')
         print(cardinal(n))
         print(ordinal(n))
