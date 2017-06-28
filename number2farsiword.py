@@ -56,7 +56,7 @@ DAH_TA_BIST = [
 SCALE = [
     '',
     ' هزار',
-    ' میلیون ',
+    ' میلیون',
     ' میلیارد',
     ' بیلیون',
     ' بیلیارد',
@@ -95,17 +95,19 @@ def cardinal(strnumber):
 
     length = len(strnumber)
 
-    if length % 3 != 0:
-        strnumber = '0' * (3-length % 3) + strnumber
+    modulo_3 = length % 3
+    if modulo_3:
+        strnumber = '0' * (3 - modulo_3) + strnumber
+        length += 3 - modulo_3
 
-    groups = len(strnumber) // 3
+    groups = length // 3
     words = ''
     group = groups
     while group > 0:
-        threedigit = strnumber[group * 3 - 3:group * 3]
-        word3 = _three_digit_words(threedigit)
+        three_digit = strnumber[group * 3 - 3:group * 3]
+        word3 = _three_digit_words(three_digit)
         
-        if word3 != '' and group != groups:
+        if word3 and group != groups:
             if words == '':
                 words = word3 + SCALE[groups - group]
             else:
