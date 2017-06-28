@@ -1,6 +1,8 @@
 """Provide functions to convert a number (int) to Persian words."""
 
 from typing import Union
+from itertools import chain
+
 
 YEKAN = [
     '',
@@ -69,6 +71,11 @@ SCALE = [
     ' کوانتینیارد',
 ]
 
+ASHAR = ['', 'دهم', 'صدم']
+ASHAR.extend(chain.from_iterable(
+    (i, 'ده ' + i, 'صد ' + i) for i in (i.rstrip() + 'م' for i in SCALE[1:])
+))
+
 
 def _three_digit_words(threedigit: str):
     """Return the word representation of threedigit."""
@@ -86,12 +93,11 @@ def _three_digit_words(threedigit: str):
     return words + YEKAN[int(yekan)]
 
 
-def cardinal_words(number: Union[str, int]):
-    int_num = int(number)
-    str_num = str(int_num)
-    if int_num == 0:
+def cardinal_words(number: Union[int, float]):
+    str_num = str(number)
+    if number == 0:
         return 'صفر'
-    if int_num < 0:
+    if number < 0:
         str_num = str_num[1:]
         negative = 'منفی '
     else:
@@ -125,9 +131,9 @@ def cardinal_words(number: Union[str, int]):
     return negative + words
 
 
-def ordinal_words(digits: Union[str, int]):
-    """Return the ordinal_words form of the digits converted to words."""
-    words = cardinal_words(digits)
+def ordinal_words(number: Union[int, float]):
+    """Return the ordinal_words form of the number converted to words."""
+    words = cardinal_words(number)
     if words[-2:] == 'سه':
         return words[:-2] + 'سوم'
     return words + 'م'

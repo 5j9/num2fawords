@@ -8,49 +8,50 @@ class Number2FarsiWord(TestCase):
 
     def test_cardinal(self):
         """Test the cardinal_words function."""
-        self.assertEqual(cardinal_words('0'), 'صفر')
-        self.assertEqual(cardinal_words('1'), 'یک')
-        self.assertEqual(cardinal_words('2'), 'دو')
-        self.assertEqual(cardinal_words('3'), 'سه')
-        self.assertEqual(cardinal_words('4'), 'چهار')
-        self.assertEqual(cardinal_words('5'), 'پنج')
-        self.assertEqual(cardinal_words('6'), 'شش')
-        self.assertEqual(cardinal_words('7'), 'هفت')
-        self.assertEqual(cardinal_words('8'), 'هشت')
-        self.assertEqual(cardinal_words('9'), 'نه')
-        self.assertEqual(cardinal_words('10'), 'ده')
-        self.assertEqual(cardinal_words('11'), 'یازده')
-        self.assertEqual(cardinal_words('12'), 'دوازده')
-        self.assertEqual(cardinal_words('13'), 'سیزده')
-        self.assertEqual(cardinal_words('14'), 'چهارده')
-        self.assertEqual(cardinal_words('15'), 'پانزده')
-        self.assertEqual(cardinal_words('16'), 'شانزده')
-        self.assertEqual(cardinal_words('17'), 'هفده')
-        self.assertEqual(cardinal_words('18'), 'هجده')
-        self.assertEqual(cardinal_words('19'), 'نوزده')
-        self.assertEqual(cardinal_words('20'), 'بیست')
-        self.assertEqual(cardinal_words('21'), 'بیست و یک')
-        self.assertEqual(cardinal_words('22'), 'بیست و دو')
-        self.assertEqual(cardinal_words('23'), 'بیست و سه')
-        self.assertEqual(cardinal_words('24'), 'بیست و چهار')
-        self.assertEqual(cardinal_words('29'), 'بیست و نه')
-        self.assertEqual(cardinal_words('30'), 'سی')
-        self.assertEqual(cardinal_words('35'), 'سی و پنج')
-        self.assertEqual(cardinal_words('44'), 'چهل و چهار')
-        self.assertEqual(cardinal_words('57'), 'پنجاه و هفت')
-        self.assertEqual(cardinal_words('61'), 'شصت و یک')
-        self.assertEqual(cardinal_words('78'), 'هفتاد و هشت')
-        self.assertEqual(cardinal_words('80'), 'هشتاد')
-        self.assertEqual(cardinal_words('93'), 'نود و سه')
-        self.assertEqual(cardinal_words('100'), 'یکصد')
-        self.assertEqual(cardinal_words('101'), 'یکصد و یک')
-        self.assertEqual(cardinal_words('1235'), 'یک هزار و دویست و سی و پنج')
-        self.assertEqual(
-            cardinal_words('99999999'),
+        assert_equal = self.assertEqual
+        assert_equal(cardinal_words(0), 'صفر')
+        assert_equal(cardinal_words(1), 'یک')
+        assert_equal(cardinal_words(2), 'دو')
+        assert_equal(cardinal_words(3), 'سه')
+        assert_equal(cardinal_words(4), 'چهار')
+        assert_equal(cardinal_words(5), 'پنج')
+        assert_equal(cardinal_words(6), 'شش')
+        assert_equal(cardinal_words(7), 'هفت')
+        assert_equal(cardinal_words(8), 'هشت')
+        assert_equal(cardinal_words(9), 'نه')
+        assert_equal(cardinal_words(10), 'ده')
+        assert_equal(cardinal_words(11), 'یازده')
+        assert_equal(cardinal_words(12), 'دوازده')
+        assert_equal(cardinal_words(13), 'سیزده')
+        assert_equal(cardinal_words(14), 'چهارده')
+        assert_equal(cardinal_words(15), 'پانزده')
+        assert_equal(cardinal_words(16), 'شانزده')
+        assert_equal(cardinal_words(17), 'هفده')
+        assert_equal(cardinal_words(18), 'هجده')
+        assert_equal(cardinal_words(19), 'نوزده')
+        assert_equal(cardinal_words(20), 'بیست')
+        assert_equal(cardinal_words(21), 'بیست و یک')
+        assert_equal(cardinal_words(22), 'بیست و دو')
+        assert_equal(cardinal_words(23), 'بیست و سه')
+        assert_equal(cardinal_words(24), 'بیست و چهار')
+        assert_equal(cardinal_words(29), 'بیست و نه')
+        assert_equal(cardinal_words(30), 'سی')
+        assert_equal(cardinal_words(35), 'سی و پنج')
+        assert_equal(cardinal_words(44), 'چهل و چهار')
+        assert_equal(cardinal_words(57), 'پنجاه و هفت')
+        assert_equal(cardinal_words(61), 'شصت و یک')
+        assert_equal(cardinal_words(78), 'هفتاد و هشت')
+        assert_equal(cardinal_words(80), 'هشتاد')
+        assert_equal(cardinal_words(93), 'نود و سه')
+        assert_equal(cardinal_words(100), 'یکصد')
+        assert_equal(cardinal_words(101), 'یکصد و یک')
+        assert_equal(cardinal_words(1235), 'یک هزار و دویست و سی و پنج')
+        assert_equal(
+            cardinal_words(99999999),
             'نود و نه میلیون و نهصد و نود و نه هزار و نهصد و نود و نه',
         )
-        self.assertEqual(
-            cardinal_words('999999999999999999'),
+        assert_equal(
+            cardinal_words(999999999999999999),
             'نهصد و نود و نه بیلیارد'
             ' و نهصد و نود و نه بیلیون'
             ' و نهصد و نود و نه میلیارد'
@@ -59,47 +60,46 @@ class Number2FarsiWord(TestCase):
             ' و نهصد و نود و نه',
         )
 
-    def test_accepts_unicode_digits(self):
-        self.assertEqual(cardinal_words('۰'), 'صفر')
-        self.assertEqual(ordinal_words('۰'), 'صفرم')
-
     def test_negative_nubmers(self):
-        self.assertEqual(cardinal_words('-5'), 'منفی پنج')
-        self.assertEqual(cardinal_words(-5), 'منفی پنج')
+        assert_equal = self.assertEqual
+        assert_equal(cardinal_words(-5), 'منفی پنج')
+        assert_equal(cardinal_words(-5), 'منفی پنج')
 
-    def test_ordinal(self):
+    def test_ordinal_words(self):
         """Test the ordinal_words function."""
-        self.assertEqual(ordinal_words('0'), 'صفرم')
-        self.assertEqual(ordinal_words('1'), 'یکم')
-        self.assertEqual(ordinal_words('2'), 'دوم')
-        self.assertEqual(ordinal_words('3'), 'سوم')
-        self.assertEqual(ordinal_words('4'), 'چهارم')
-        self.assertEqual(ordinal_words('5'), 'پنجم')
-        self.assertEqual(ordinal_words('6'), 'ششم')
-        self.assertEqual(ordinal_words('7'), 'هفتم')
-        self.assertEqual(ordinal_words('8'), 'هشتم')
-        self.assertEqual(ordinal_words('9'), 'نهم')
-        self.assertEqual(ordinal_words('10'), 'دهم')
-        self.assertEqual(ordinal_words('11'), 'یازدهم')
-        self.assertEqual(ordinal_words('12'), 'دوازدهم')
-        self.assertEqual(ordinal_words('13'), 'سیزدهم')
-        self.assertEqual(ordinal_words('14'), 'چهاردهم')
-        self.assertEqual(ordinal_words('15'), 'پانزدهم')
-        self.assertEqual(ordinal_words('16'), 'شانزدهم')
-        self.assertEqual(ordinal_words('17'), 'هفدهم')
-        self.assertEqual(ordinal_words('18'), 'هجدهم')
-        self.assertEqual(ordinal_words('19'), 'نوزدهم')
-        self.assertEqual(ordinal_words('20'), 'بیستم')
-        self.assertEqual(ordinal_words('21'), 'بیست و یکم')
-        self.assertEqual(ordinal_words('22'), 'بیست و دوم')
-        self.assertEqual(ordinal_words('23'), 'بیست و سوم')
-        self.assertEqual(ordinal_words('24'), 'بیست و چهارم')
-        self.assertEqual(ordinal_words('1999'), 'یک هزار و نهصد و نود و نهم')
-        self.assertEqual(ordinal_words('10666'), 'ده هزار و ششصد و شصت و ششم')
-        self.assertEqual(ordinal_words(
-            '999555'), 'نهصد و نود و نه هزار و پانصد و پنجاه و پنجم'
+        assert_equal = self.assertEqual
+        assert_equal(ordinal_words(0), 'صفرم')
+        assert_equal(ordinal_words(1), 'یکم')
+        assert_equal(ordinal_words(2), 'دوم')
+        assert_equal(ordinal_words(3), 'سوم')
+        assert_equal(ordinal_words(4), 'چهارم')
+        assert_equal(ordinal_words(5), 'پنجم')
+        assert_equal(ordinal_words(6), 'ششم')
+        assert_equal(ordinal_words(7), 'هفتم')
+        assert_equal(ordinal_words(8), 'هشتم')
+        assert_equal(ordinal_words(9), 'نهم')
+        assert_equal(ordinal_words(10), 'دهم')
+        assert_equal(ordinal_words(11), 'یازدهم')
+        assert_equal(ordinal_words(12), 'دوازدهم')
+        assert_equal(ordinal_words(13), 'سیزدهم')
+        assert_equal(ordinal_words(14), 'چهاردهم')
+        assert_equal(ordinal_words(15), 'پانزدهم')
+        assert_equal(ordinal_words(16), 'شانزدهم')
+        assert_equal(ordinal_words(17), 'هفدهم')
+        assert_equal(ordinal_words(18), 'هجدهم')
+        assert_equal(ordinal_words(19), 'نوزدهم')
+        assert_equal(ordinal_words(20), 'بیستم')
+        assert_equal(ordinal_words(21), 'بیست و یکم')
+        assert_equal(ordinal_words(22), 'بیست و دوم')
+        assert_equal(ordinal_words(23), 'بیست و سوم')
+        assert_equal(ordinal_words(24), 'بیست و چهارم')
+        assert_equal(ordinal_words(1999), 'یک هزار و نهصد و نود و نهم')
+        assert_equal(ordinal_words(10666), 'ده هزار و ششصد و شصت و ششم')
+        assert_equal(
+            ordinal_words(999555),
+            'نهصد و نود و نه هزار و پانصد و پنجاه و پنجم',
         )
-        # self.assertEqual(ordinal_words('1000000'), 'یک میلیونم')
+        # assert_equal(ordinal_words(1000000), 'یک میلیونم')
 
 
 if __name__ == '__main':
