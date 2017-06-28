@@ -71,20 +71,19 @@ SCALE = [
 
 
 def _three_digit_words(threedigit):
+    """Return the word representation of threedigit."""
     sadgan, dahgan, yekan = threedigit
-    if sadgan != '0' and threedigit[1:] != '00':
-        words = SADGAN[sadgan] + ' و '
-    else:
+    if sadgan == '0' or threedigit[1:] == '00':
         words = SADGAN[sadgan]
-    if dahgan == '1':
-        words += DAH_TA_BIST[yekan]
     else:
-        if yekan != '0' and dahgan != '0':
-            words += DAHGAN[dahgan] + ' و '
-        else:
-            words += DAHGAN[dahgan]
-        words += YEKAN[yekan]
-    return words
+        words = SADGAN[sadgan] + ' و '
+    if dahgan == '1':
+        return DAH_TA_BIST[yekan]
+    if yekan == '0' or dahgan == '0':
+        words += DAHGAN[dahgan]
+    else:
+        words += DAHGAN[dahgan] + ' و '
+    return words + YEKAN[yekan]
 
 
 def cardinal(strnumber):
