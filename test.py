@@ -1,5 +1,5 @@
 from unittest import TestCase, main
-from number2farsiword import cardinal, ordinal
+from number2farsiword import int_to_cardinal, int_to_ordinal
 
 
 class Number2FarsiWord(TestCase):
@@ -7,50 +7,50 @@ class Number2FarsiWord(TestCase):
     """Test number2farsiword module."""
 
     def test_cardinal(self):
-        """Test the cardinal function."""
-        self.assertEqual(cardinal('0'), 'صفر')
-        self.assertEqual(cardinal('1'), 'یک')
-        self.assertEqual(cardinal('2'), 'دو')
-        self.assertEqual(cardinal('3'), 'سه')
-        self.assertEqual(cardinal('4'), 'چهار')
-        self.assertEqual(cardinal('5'), 'پنج')
-        self.assertEqual(cardinal('6'), 'شش')
-        self.assertEqual(cardinal('7'), 'هفت')
-        self.assertEqual(cardinal('8'), 'هشت')
-        self.assertEqual(cardinal('9'), 'نه')
-        self.assertEqual(cardinal('10'), 'ده')
-        self.assertEqual(cardinal('11'), 'یازده')
-        self.assertEqual(cardinal('12'), 'دوازده')
-        self.assertEqual(cardinal('13'), 'سیزده')
-        self.assertEqual(cardinal('14'), 'چهارده')
-        self.assertEqual(cardinal('15'), 'پانزده')
-        self.assertEqual(cardinal('16'), 'شانزده')
-        self.assertEqual(cardinal('17'), 'هفده')
-        self.assertEqual(cardinal('18'), 'هجده')
-        self.assertEqual(cardinal('19'), 'نوزده')
-        self.assertEqual(cardinal('20'), 'بیست')
-        self.assertEqual(cardinal('21'), 'بیست و یک')
-        self.assertEqual(cardinal('22'), 'بیست و دو')
-        self.assertEqual(cardinal('23'), 'بیست و سه')
-        self.assertEqual(cardinal('24'), 'بیست و چهار')
-        self.assertEqual(cardinal('29'), 'بیست و نه')
-        self.assertEqual(cardinal('30'), 'سی')
-        self.assertEqual(cardinal('35'), 'سی و پنج')
-        self.assertEqual(cardinal('44'), 'چهل و چهار')
-        self.assertEqual(cardinal('57'), 'پنجاه و هفت')
-        self.assertEqual(cardinal('61'), 'شصت و یک')
-        self.assertEqual(cardinal('78'), 'هفتاد و هشت')
-        self.assertEqual(cardinal('80'), 'هشتاد')
-        self.assertEqual(cardinal('93'), 'نود و سه')
-        self.assertEqual(cardinal('100'), 'یکصد')
-        self.assertEqual(cardinal('101'), 'یکصد و یک')
-        self.assertEqual(cardinal('1235'), 'یک هزار و دویست و سی و پنج')
+        """Test the int_to_cardinal function."""
+        self.assertEqual(int_to_cardinal('0'), 'صفر')
+        self.assertEqual(int_to_cardinal('1'), 'یک')
+        self.assertEqual(int_to_cardinal('2'), 'دو')
+        self.assertEqual(int_to_cardinal('3'), 'سه')
+        self.assertEqual(int_to_cardinal('4'), 'چهار')
+        self.assertEqual(int_to_cardinal('5'), 'پنج')
+        self.assertEqual(int_to_cardinal('6'), 'شش')
+        self.assertEqual(int_to_cardinal('7'), 'هفت')
+        self.assertEqual(int_to_cardinal('8'), 'هشت')
+        self.assertEqual(int_to_cardinal('9'), 'نه')
+        self.assertEqual(int_to_cardinal('10'), 'ده')
+        self.assertEqual(int_to_cardinal('11'), 'یازده')
+        self.assertEqual(int_to_cardinal('12'), 'دوازده')
+        self.assertEqual(int_to_cardinal('13'), 'سیزده')
+        self.assertEqual(int_to_cardinal('14'), 'چهارده')
+        self.assertEqual(int_to_cardinal('15'), 'پانزده')
+        self.assertEqual(int_to_cardinal('16'), 'شانزده')
+        self.assertEqual(int_to_cardinal('17'), 'هفده')
+        self.assertEqual(int_to_cardinal('18'), 'هجده')
+        self.assertEqual(int_to_cardinal('19'), 'نوزده')
+        self.assertEqual(int_to_cardinal('20'), 'بیست')
+        self.assertEqual(int_to_cardinal('21'), 'بیست و یک')
+        self.assertEqual(int_to_cardinal('22'), 'بیست و دو')
+        self.assertEqual(int_to_cardinal('23'), 'بیست و سه')
+        self.assertEqual(int_to_cardinal('24'), 'بیست و چهار')
+        self.assertEqual(int_to_cardinal('29'), 'بیست و نه')
+        self.assertEqual(int_to_cardinal('30'), 'سی')
+        self.assertEqual(int_to_cardinal('35'), 'سی و پنج')
+        self.assertEqual(int_to_cardinal('44'), 'چهل و چهار')
+        self.assertEqual(int_to_cardinal('57'), 'پنجاه و هفت')
+        self.assertEqual(int_to_cardinal('61'), 'شصت و یک')
+        self.assertEqual(int_to_cardinal('78'), 'هفتاد و هشت')
+        self.assertEqual(int_to_cardinal('80'), 'هشتاد')
+        self.assertEqual(int_to_cardinal('93'), 'نود و سه')
+        self.assertEqual(int_to_cardinal('100'), 'یکصد')
+        self.assertEqual(int_to_cardinal('101'), 'یکصد و یک')
+        self.assertEqual(int_to_cardinal('1235'), 'یک هزار و دویست و سی و پنج')
         self.assertEqual(
-            cardinal('99999999'),
+            int_to_cardinal('99999999'),
             'نود و نه میلیون و نهصد و نود و نه هزار و نهصد و نود و نه',
         )
         self.assertEqual(
-            cardinal('999999999999999999'),
+            int_to_cardinal('999999999999999999'),
             'نهصد و نود و نه بیلیارد'
             ' و نهصد و نود و نه بیلیون'
             ' و نهصد و نود و نه میلیارد'
@@ -60,42 +60,46 @@ class Number2FarsiWord(TestCase):
         )
 
     def test_accepts_unicode_digits(self):
-        self.assertEqual(cardinal('۰'), 'صفر')
-        self.assertEqual(ordinal('۰'), 'صفرم')
+        self.assertEqual(int_to_cardinal('۰'), 'صفر')
+        self.assertEqual(int_to_ordinal('۰'), 'صفرم')
+
+    def test_negative_nubmers(self):
+        self.assertEqual(int_to_cardinal('-5'), 'منفی پنج')
+        self.assertEqual(int_to_cardinal(-5), 'منفی پنج')
 
     def test_ordinal(self):
-        """Test the ordinal function."""
-        self.assertEqual(ordinal('0'), 'صفرم')
-        self.assertEqual(ordinal('1'), 'یکم')
-        self.assertEqual(ordinal('2'), 'دوم')
-        self.assertEqual(ordinal('3'), 'سوم')
-        self.assertEqual(ordinal('4'), 'چهارم')
-        self.assertEqual(ordinal('5'), 'پنجم')
-        self.assertEqual(ordinal('6'), 'ششم')
-        self.assertEqual(ordinal('7'), 'هفتم')
-        self.assertEqual(ordinal('8'), 'هشتم')
-        self.assertEqual(ordinal('9'), 'نهم')
-        self.assertEqual(ordinal('10'), 'دهم')
-        self.assertEqual(ordinal('11'), 'یازدهم')
-        self.assertEqual(ordinal('12'), 'دوازدهم')
-        self.assertEqual(ordinal('13'), 'سیزدهم')
-        self.assertEqual(ordinal('14'), 'چهاردهم')
-        self.assertEqual(ordinal('15'), 'پانزدهم')
-        self.assertEqual(ordinal('16'), 'شانزدهم')
-        self.assertEqual(ordinal('17'), 'هفدهم')
-        self.assertEqual(ordinal('18'), 'هجدهم')
-        self.assertEqual(ordinal('19'), 'نوزدهم')
-        self.assertEqual(ordinal('20'), 'بیستم')
-        self.assertEqual(ordinal('21'), 'بیست و یکم')
-        self.assertEqual(ordinal('22'), 'بیست و دوم')
-        self.assertEqual(ordinal('23'), 'بیست و سوم')
-        self.assertEqual(ordinal('24'), 'بیست و چهارم')
-        self.assertEqual(ordinal('1999'), 'یک هزار و نهصد و نود و نهم')
-        self.assertEqual(ordinal('10666'), 'ده هزار و ششصد و شصت و ششم')
-        self.assertEqual(ordinal(
+        """Test the int_to_ordinal function."""
+        self.assertEqual(int_to_ordinal('0'), 'صفرم')
+        self.assertEqual(int_to_ordinal('1'), 'یکم')
+        self.assertEqual(int_to_ordinal('2'), 'دوم')
+        self.assertEqual(int_to_ordinal('3'), 'سوم')
+        self.assertEqual(int_to_ordinal('4'), 'چهارم')
+        self.assertEqual(int_to_ordinal('5'), 'پنجم')
+        self.assertEqual(int_to_ordinal('6'), 'ششم')
+        self.assertEqual(int_to_ordinal('7'), 'هفتم')
+        self.assertEqual(int_to_ordinal('8'), 'هشتم')
+        self.assertEqual(int_to_ordinal('9'), 'نهم')
+        self.assertEqual(int_to_ordinal('10'), 'دهم')
+        self.assertEqual(int_to_ordinal('11'), 'یازدهم')
+        self.assertEqual(int_to_ordinal('12'), 'دوازدهم')
+        self.assertEqual(int_to_ordinal('13'), 'سیزدهم')
+        self.assertEqual(int_to_ordinal('14'), 'چهاردهم')
+        self.assertEqual(int_to_ordinal('15'), 'پانزدهم')
+        self.assertEqual(int_to_ordinal('16'), 'شانزدهم')
+        self.assertEqual(int_to_ordinal('17'), 'هفدهم')
+        self.assertEqual(int_to_ordinal('18'), 'هجدهم')
+        self.assertEqual(int_to_ordinal('19'), 'نوزدهم')
+        self.assertEqual(int_to_ordinal('20'), 'بیستم')
+        self.assertEqual(int_to_ordinal('21'), 'بیست و یکم')
+        self.assertEqual(int_to_ordinal('22'), 'بیست و دوم')
+        self.assertEqual(int_to_ordinal('23'), 'بیست و سوم')
+        self.assertEqual(int_to_ordinal('24'), 'بیست و چهارم')
+        self.assertEqual(int_to_ordinal('1999'), 'یک هزار و نهصد و نود و نهم')
+        self.assertEqual(int_to_ordinal('10666'), 'ده هزار و ششصد و شصت و ششم')
+        self.assertEqual(int_to_ordinal(
             '999555'), 'نهصد و نود و نه هزار و پانصد و پنجاه و پنجم'
         )
-        # self.assertEqual(ordinal('1000000'), 'یک میلیونم')
+        # self.assertEqual(int_to_ordinal('1000000'), 'یک میلیونم')
 
 
 if __name__ == '__main':

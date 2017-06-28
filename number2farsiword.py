@@ -1,5 +1,7 @@
 """Provide functions to convert a number (int) to Persian words."""
 
+from typing import Union
+
 YEKAN = [
     '',
     'یک',
@@ -68,7 +70,7 @@ SCALE = [
 ]
 
 
-def _three_digit_words(threedigit):
+def _three_digit_words(threedigit: str):
     """Return the word representation of threedigit."""
     sadgan, dahgan, yekan = threedigit
     if sadgan == '0' or threedigit[1:] == '00':
@@ -84,40 +86,48 @@ def _three_digit_words(threedigit):
     return words + YEKAN[int(yekan)]
 
 
-def cardinal(digits: str):
-    if int(digits) == 0:
+def int_to_cardinal(number: Union[str, int]):
+    int_num = int(number)
+    str_num = str(int_num)
+    if int_num == 0:
         return 'صفر'
+    if int_num < 0:
+        str_num = str_num[1:]
+        negative = 'منفی '
+    else:
+        negative = ''
 
-    if len(digits) > len(SCALE) * 3:
+    if len(str_num) > len(SCALE) * 3:
         raise ValueError('out of range')
 
-    length = len(digits)
+    length = len(str_num)
 
     modulo_3 = length % 3
     if modulo_3:
-        digits = '0' * (3 - modulo_3) + digits
+        str_num = '0' * (3 - modulo_3) + str_num
         length += 3 - modulo_3
 
     groups = length // 3
-    words = ''
     group = groups
+    words = ''
     while group > 0:
-        three_digit = digits[group * 3 - 3:group * 3]
+        three_digit = str_num[group * 3 - 3:group * 3]
         word3 = _three_digit_words(three_digit)
         if word3 and group != groups:
-            if words == '':
-                words = word3 + SCALE[groups - group]
-            else:
+            if words:
                 words = word3 + SCALE[groups - group] + ' و ' + words
+            else:
+                words = word3 + SCALE[groups - group]
         else:
             words = word3 + words
         group -= 1
-    return words
+
+    return negative + words
 
 
-def ordinal(digits: str):
-    """Return the ordinal form of the digits converted to words."""
-    words = cardinal(digits)
+def int_to_ordinal(digits: Union[str, int]):
+    """Return the int_to_ordinal form of the digits converted to words."""
+    words = int_to_cardinal(digits)
     if words[-2:] == 'سه':
         return words[:-2] + 'سوم'
     return words + 'م'
@@ -126,5 +136,5 @@ def ordinal(digits: str):
 if __name__ == '__main__':
     while True:
         n = input('Enter your number:\n')
-        print(cardinal(n))
-        print(ordinal(n))
+        print(int_to_cardinal(n))
+        print(int_to_ordinal(n))
