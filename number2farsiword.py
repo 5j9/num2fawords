@@ -1,8 +1,5 @@
 """Provide functions to convert a number (int) to Persian words."""
 
-from itertools import islice
-
-
 YEKAN = {
     '0': '',
     '1': 'یک',
