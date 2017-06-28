@@ -86,7 +86,7 @@ def _three_digit_words(threedigit: str):
     return words + YEKAN[int(yekan)]
 
 
-def int_to_cardinal(number: Union[str, int]):
+def cardinal_words(number: Union[str, int]):
     int_num = int(number)
     str_num = str(int_num)
     if int_num == 0:
@@ -125,9 +125,9 @@ def int_to_cardinal(number: Union[str, int]):
     return negative + words
 
 
-def int_to_ordinal(digits: Union[str, int]):
-    """Return the int_to_ordinal form of the digits converted to words."""
-    words = int_to_cardinal(digits)
+def ordinal_words(digits: Union[str, int]):
+    """Return the ordinal_words form of the digits converted to words."""
+    words = cardinal_words(digits)
     if words[-2:] == 'سه':
         return words[:-2] + 'سوم'
     return words + 'م'
@@ -136,5 +136,5 @@ def int_to_ordinal(digits: Union[str, int]):
 if __name__ == '__main__':
     while True:
         n = input('Enter your number:\n')
-        print(int_to_cardinal(n))
-        print(int_to_ordinal(n))
+        print(cardinal_words(n))
+        print(ordinal_words(n))
