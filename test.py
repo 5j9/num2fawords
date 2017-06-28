@@ -59,6 +59,10 @@ class Number2FarsiWord(TestCase):
             ' و نهصد و نود و نه',
         )
 
+    def test_accepts_unicode_digits(self):
+        self.assertEqual(cardinal('۰'), 'صفر')
+        self.assertEqual(ordinal('۰'), 'صفرم')
+
     def test_ordinal(self):
         """Test the ordinal function."""
         self.assertEqual(ordinal('0'), 'صفرم')

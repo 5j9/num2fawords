@@ -1,55 +1,56 @@
 """Provide functions to convert a number (int) to Persian words."""
 
-YEKAN = {
-    '0': '',
-    '1': 'یک',
-    '2': 'دو',
-    '3': 'سه',
-    '4': 'چهار',
-    '5': 'پنج',
-    '6': 'شش',
-    '7': 'هفت',
-    '8': 'هشت',
-    '9': 'نه',
-}
+YEKAN = [
+    '',
+    'یک',
+    'دو',
+    'سه',
+    'چهار',
+    'پنج',
+    'شش',
+    'هفت',
+    'هشت',
+    'نه',
+]
 
-DAHGAN = {
-    '0': '',
-    '2': 'بیست',
-    '3': 'سی',
-    '4': 'چهل',
-    '5': 'پنجاه',
-    '6': 'شصت',
-    '7': 'هفتاد',
-    '8': 'هشتاد',
-    '9': 'نود',
-}
+DAHGAN = [
+    '',
+    '',
+    'بیست',
+    'سی',
+    'چهل',
+    'پنجاه',
+    'شصت',
+    'هفتاد',
+    'هشتاد',
+    'نود',
+]
 
-DAH_TA_BIST = {
-    '0': 'ده',
-    '1': 'یازده',
-    '2': 'دوازده',
-    '3': 'سیزده',
-    '4': 'چهارده',
-    '5': 'پانزده',
-    '6': 'شانزده',
-    '7': 'هفده',
-    '8': 'هجده',
-    '9': 'نوزده',
-}
+DAH_TA_BIST = [
+    'ده',
+    'یازده',
+    'دوازده',
+    'سیزده',
+    'چهارده',
+    'پانزده',
+    'شانزده',
+    'هفده',
+    'هجده',
+    'نوزده',
+]
 
-SADGAN = {
-    '0': '',
-    '1': 'یکصد',
-    '2': 'دویست',
-    '3': 'سیصد',
-    '4': 'چهارصد',
-    '5': 'پانصد',
-    '6': 'ششصد',
-    '7': 'هفتصد',
-    '8': 'هشتصد',
-    '9': 'نهصد',
-}
+SADGAN = [
+    '',
+    'یکصد',
+    'دویست',
+    'سیصد',
+    'چهارصد',
+    'پانصد',
+    'ششصد',
+    'هفتصد',
+    'هشتصد',
+    'نهصد',
+]
 
 SCALE = [
     '',
@@ -71,16 +72,16 @@ def _three_digit_words(threedigit):
     """Return the word representation of threedigit."""
     sadgan, dahgan, yekan = threedigit
     if sadgan == '0' or threedigit[1:] == '00':
-        words = SADGAN[sadgan]
+        words = SADGAN[int(sadgan)]
     else:
-        words = SADGAN[sadgan] + ' و '
+        words = SADGAN[int(sadgan)] + ' و '
     if dahgan == '1':
-        return DAH_TA_BIST[yekan]
+        return DAH_TA_BIST[int(yekan)]
     if yekan == '0' or dahgan == '0':
-        words += DAHGAN[dahgan]
+        words += DAHGAN[int(dahgan)]
     else:
-        words += DAHGAN[dahgan] + ' و '
-    return words + YEKAN[yekan]
+        words += DAHGAN[int(dahgan)] + ' و '
+    return words + YEKAN[int(yekan)]
 
 
 def cardinal(digits: str):
