@@ -1,57 +1,58 @@
 """Provide functions to convert a number (int) to Persian words."""
 
+from itertools import islice
 
-YEKAN = [
-    '',
-    'یک',
-    'دو',
-    'سه',
-    'چهار',
-    'پنج',
-    'شش',
-    'هفت',
-    'هشت',
-    'نه',
-]
 
-DAHGAN = [
-    '',
-    '',
-    'بیست',
-    'سی',
-    'چهل',
-    'پنجاه',
-    'شصت',
-    'هفتاد',
-    'هشتاد',
-    'نود',
-]
+YEKAN = {
+    '0': '',
+    '1': 'یک',
+    '2': 'دو',
+    '3': 'سه',
+    '4': 'چهار',
+    '5': 'پنج',
+    '6': 'شش',
+    '7': 'هفت',
+    '8': 'هشت',
+    '9': 'نه',
+}
 
-SADGAN = [
-    '',
-    'یکصد',
-    'دویست',
-    'سیصد',
-    'چهارصد',
-    'پانصد',
-    'ششصد',
-    'هفتصد',
-    'هشتصد',
-    'نهصد',
-]
+DAHGAN = {
+    '0': '',
+    '2': 'بیست',
+    '3': 'سی',
+    '4': 'چهل',
+    '5': 'پنجاه',
+    '6': 'شصت',
+    '7': 'هفتاد',
+    '8': 'هشتاد',
+    '9': 'نود',
+}
 
-DAH_TA_BIST = [
-    'ده',
-    'یازده',
-    'دوازده',
-    'سیزده',
-    'چهارده',
-    'پانزده',
-    'شانزده',
-    'هفده',
-    'هجده',
-    'نوزده',
-]
+DAH_TA_BIST = {
+    '0': 'ده',
+    '1': 'یازده',
+    '2': 'دوازده',
+    '3': 'سیزده',
+    '4': 'چهارده',
+    '5': 'پانزده',
+    '6': 'شانزده',
+    '7': 'هفده',
+    '8': 'هجده',
+    '9': 'نوزده',
+}
+
+SADGAN = {
+    '0': '',
+    '1': 'یکصد',
+    '2': 'دویست',
+    '3': 'سیصد',
+    '4': 'چهارصد',
+    '5': 'پانصد',
+    '6': 'ششصد',
+    '7': 'هفتصد',
+    '8': 'هشتصد',
+    '9': 'نهصد',
+}
 
 SCALE = [
     '',
@@ -70,19 +71,19 @@ SCALE = [
 
 
 def _three_digit_words(threedigit):
-    d1, d2, d3 = threedigit
-    if d1 != '0' and threedigit[1:] != '00':
-        words = SADGAN[int(d1)] + ' و '
+    sadgan, dahgan, yekan = threedigit
+    if sadgan != '0' and threedigit[1:] != '00':
+        words = SADGAN[sadgan] + ' و '
     else:
-        words = SADGAN[int(d1)]
-    if d2 == '1':
-        words += DAH_TA_BIST[int(d3)]
+        words = SADGAN[sadgan]
+    if dahgan == '1':
+        words += DAH_TA_BIST[yekan]
     else:
-        if d3 != '0' and d2 != '0':
-            words += DAHGAN[int(d2)] + ' و '
+        if yekan != '0' and dahgan != '0':
+            words += DAHGAN[dahgan] + ' و '
         else:
-            words += DAHGAN[int(d2)]
-        words += YEKAN[int(d3)]
+            words += DAHGAN[dahgan]
+        words += YEKAN[yekan]
     return words
 
 
@@ -106,7 +107,6 @@ def cardinal(strnumber):
     while group > 0:
         three_digit = strnumber[group * 3 - 3:group * 3]
         word3 = _three_digit_words(three_digit)
-        
         if word3 and group != groups:
             if words == '':
                 words = word3 + SCALE[groups - group]
@@ -114,7 +114,6 @@ def cardinal(strnumber):
                 words = word3 + SCALE[groups - group] + ' و ' + words
         else:
             words = word3 + words
-
         group -= 1
     return words
 
