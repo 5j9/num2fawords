@@ -1,9 +1,9 @@
 """Provide functions to convert a number (int) to Persian words."""
-#a Lua rewrite of this code is available at: http://fa.wikipedia.org/wiki/پودمان:عدد_به_حروف
+
 
 YEKAN = [
     '',
-    'يک',
+    'یک',
     'دو',
     'سه',
     'چهار',
@@ -17,8 +17,8 @@ YEKAN = [
 DAHGAN = [
     '',
     '',
-    'بيست',
-    'سي',
+    'بیست',
+    'سی',
     'چهل',
     'پنجاه',
     'شصت',
@@ -29,9 +29,9 @@ DAHGAN = [
 
 SADGAN = [
     '',
-    'يکصد',
-    'دويست',
-    'سيصد',
+    'یکصد',
+    'دویست',
+    'سیصد',
     'چهارصد',
     'پانصد',
     'ششصد',
@@ -42,9 +42,9 @@ SADGAN = [
 
 DAH_TA_BIST = [
     'ده',
-    'يازده',
+    'یازده',
     'دوازده',
-    'سيزده',
+    'سیزده',
     'چهارده',
     'پانزده',
     'شانزده',
@@ -56,32 +56,33 @@ DAH_TA_BIST = [
 SCALE = [
     '',
     ' هزار',
-    ' ميليون ',
-    ' ميليارد',
-    ' بيليون',
-    ' بيليارد',
-    ' تريليون',
-    ' ترليارد',
-    ' کوآدريليون',
-    ' کادريليارد',
-    ' کوينتيليون',
-    ' کوانتينيارد',
+    ' میلیون ',
+    ' میلیارد',
+    ' بیلیون',
+    ' بیلیارد',
+    ' تریلیون',
+    ' ترلیارد',
+    ' کوآدریلیون',
+    ' کادریلیارد',
+    ' کوینتیلیون',
+    ' کوانتینیارد',
 ]
 
 
 def _three_digit_words(threedigit):
-    if threedigit[0] != '0' and threedigit[1:] != '00':
-        words = SADGAN[int(threedigit[0])] + ' و '
+    d1, d2, d3 = threedigit
+    if d1 != '0' and threedigit[1:] != '00':
+        words = SADGAN[int(d1)] + ' و '
     else:
-        words = SADGAN[int(threedigit[0])]
-    if threedigit[1] == '1':
-        words += DAH_TA_BIST[int(threedigit[2])]
+        words = SADGAN[int(d1)]
+    if d2 == '1':
+        words += DAH_TA_BIST[int(d3)]
     else:
-        if threedigit[2] != '0' and threedigit[1] != '0':
-            words += DAHGAN[int(threedigit[1])] + ' و '
+        if d3 != '0' and d2 != '0':
+            words += DAHGAN[int(d2)] + ' و '
         else:
-            words += DAHGAN[int(threedigit[1])]
-        words += YEKAN[int(threedigit[2])]
+            words += DAHGAN[int(d2)]
+        words += YEKAN[int(d3)]
     return words
 
 
