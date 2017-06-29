@@ -86,7 +86,7 @@ def _three_digit_words(threedigit: str) -> str:
     else:
         words = SADGAN[int(sadgan)] + ' و '
     if dahgan == '1':
-        return DAH_TA_BIST[int(yekan)]
+        return words + DAH_TA_BIST[int(yekan)]
     if yekan == '0' or dahgan == '0':
         words += DAHGAN[int(dahgan)]
     else:

@@ -93,6 +93,7 @@ class Number2FarsiWord(TestCase):
         assert_equal(ordinal_words(22), 'بیست و دوم')
         assert_equal(ordinal_words(23), 'بیست و سوم')
         assert_equal(ordinal_words(24), 'بیست و چهارم')
+        assert_equal(ordinal_words(111), 'یکصد و یازدهم')
         assert_equal(ordinal_words(1999), 'یک هزار و نهصد و نود و نهم')
         assert_equal(ordinal_words(10666), 'ده هزار و ششصد و شصت و ششم')
         assert_equal(
