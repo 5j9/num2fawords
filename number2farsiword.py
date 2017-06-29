@@ -78,6 +78,8 @@ ASHAR.extend(chain.from_iterable(
 ))
 
 
+MOMAYEZ = ' ممیز '
+
 def _three_digit_words(threedigit: str) -> str:
     """Return the word representation of threedigit."""
     sadgan, dahgan, yekan = threedigit
@@ -126,7 +128,7 @@ def cardinal_words(number: Union[int, float, str]) -> str:
         if str_int == '0':
             return cardinal_words(int_dec) + ASHAR[len(str_dec)]
         if int_dec:
-            dec_words = ' ممیز ' + cardinal_words(int_dec) + \
+            dec_words = MOMAYEZ + cardinal_words(int_dec) + \
                         ASHAR[len(str_dec)]
         else:
             dec_words = ''
