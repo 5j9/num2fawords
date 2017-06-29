@@ -114,6 +114,9 @@ class Number2FarsiWord(TestCase):
         assert_equal(cardinal_words(0.000001), 'یک میلیونم')
         assert_equal(cardinal_words(0.0000011), 'یازده ده میلیونم')
         assert_equal(cardinal_words(0.00000111), 'یکصد و یازده صد میلیونم')
+        assert_equal(
+            cardinal_words(0.000001111), 'یک هزار و یکصد و یازده میلیاردم'
+        )
 
 
 if __name__ == '__main':
