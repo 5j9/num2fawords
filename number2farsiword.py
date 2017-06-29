@@ -77,8 +77,8 @@ ASHAR.extend(chain.from_iterable(
     for i in (i + 'م' for i in SCALE[1:])
 ))
 
-
 MOMAYEZ = ' ممیز '
+
 
 def _three_digit_words(threedigit: str) -> str:
     """Return the word representation of threedigit."""
@@ -172,8 +172,25 @@ def ordinal_words(number: Union[int, str])-> str:
 
 
 if __name__ == '__main__':
-    from ast import literal_eval
-    while True:
-        n = literal_eval(input('Enter your number:\n'))
-        print(cardinal_words(n))
-        print(ordinal_words(n))
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        'number', help='the number that is going to be converted to words'
+    )
+    parser.add_argument(
+        '--ordinal', '-o',
+        help='convert to ordinal from', action='store_true',
+    )
+    parser.add_argument(
+        '--cardinal', '-c',
+        help='convert to cardinal form', action='store_true',
+    )
+    args = parser.parse_args()
+    if args.cardinal:
+        if args.ordinal:
+            print(cardinal_words(args.number))
+            print(ordinal_words(args.number))
+        else:
+            print(cardinal_words(args.number))
+    else:
+        print(ordinal_words(args.number))
