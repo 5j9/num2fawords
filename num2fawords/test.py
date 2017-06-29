@@ -1,5 +1,6 @@
 from unittest import TestCase, main
-from number2farsiword import cardinal_words, ordinal_words
+
+from num2fawords import cardinal_words, ordinal_words
 
 
 class Number2FarsiWord(TestCase):
