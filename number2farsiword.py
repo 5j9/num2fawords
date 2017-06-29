@@ -113,12 +113,21 @@ def cardinal_words(number: Union[int, float, str]) -> str:
         negative = ''
 
     if isinstance(number, float):
+        base, e_, exponent = str_num.rpartition('e-')
+        if e_:
+            if base[1:2] == '.':
+                return cardinal_words(base[:1] + base[2:]) + \
+                       ASHAR[int(exponent) + len(base) - 2]
+            else:
+                return cardinal_words(base) + \
+                       ASHAR[int(exponent)]
         str_int, _, str_dec = str_num.rpartition('.')
         int_dec = int(str_dec)
         if str_int == '0':
             return cardinal_words(int_dec) + ASHAR[len(str_dec)]
         if int_dec:
-            dec_words = ' ممیز ' + cardinal_words(int_dec) + ASHAR[len(str_dec)]
+            dec_words = ' ممیز ' + cardinal_words(int_dec) + \
+                        ASHAR[len(str_dec)]
         else:
             dec_words = ''
     else:

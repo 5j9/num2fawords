@@ -103,14 +103,17 @@ class Number2FarsiWord(TestCase):
         assert_equal(ordinal_words(1000000), 'یک میلیونم')
 
     def test_float(self):
-        self.assertEqual(cardinal_words(0.0), 'صفر')
-        self.assertEqual(cardinal_words(1.0), 'یک')
-        self.assertEqual(cardinal_words(1.1), 'یک ممیز یک دهم')
-        self.assertEqual(cardinal_words(1.100), 'یک ممیز یک دهم')
-        self.assertEqual(cardinal_words(0.001), 'یک هزارم')
-        self.assertEqual(cardinal_words(0.1001), 'یک هزار و یک ده هزارم')
-        self.assertEqual(cardinal_words(5.45), 'پنج ممیز چهل و پنج صدم')
-        # self.assertEqual(cardinal_words(0.000001), 'یک میلیونم')
+        assert_equal = self.assertEqual
+        assert_equal(cardinal_words(0.0), 'صفر')
+        assert_equal(cardinal_words(1.0), 'یک')
+        assert_equal(cardinal_words(1.1), 'یک ممیز یک دهم')
+        assert_equal(cardinal_words(1.100), 'یک ممیز یک دهم')
+        assert_equal(cardinal_words(0.001), 'یک هزارم')
+        assert_equal(cardinal_words(0.1001), 'یک هزار و یک ده هزارم')
+        assert_equal(cardinal_words(5.45), 'پنج ممیز چهل و پنج صدم')
+        assert_equal(cardinal_words(0.000001), 'یک میلیونم')
+        assert_equal(cardinal_words(0.0000011), 'یازده ده میلیونم')
+        assert_equal(cardinal_words(0.00000111), 'یکصد و یازده صد میلیونم')
 
 
 if __name__ == '__main':
