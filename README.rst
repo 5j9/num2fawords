@@ -7,7 +7,7 @@ word form.
 Usage
 =====
 
-::
+.. code-block:: python
 
 	>>> from number2farsiword import cardinal_words, ordinal_words
 	>>> cardinal_words(1984)
@@ -21,14 +21,14 @@ Obviously, `cardinal_words` is used convert to cardinal form and `ordinal_words`
 
 Use can also pass in floating point numbers:
 
-::
+.. code-block:: python
 
 	>>> cardinal_words(19.75)
 	'نوزده ممیز هفتاد و پنج صدم'
 
 This is the default setting. If you'd like to ommit the word "ممیز" from the output and use "و" instead of it, you can:
 
-::
+.. code-block:: python
 
 	>>> import number2farsiword
 	>>> number2farsiword.MOMAYEZ  # default value:
@@ -39,7 +39,7 @@ This is the default setting. If you'd like to ommit the word "ممیز" from the
 
 Also some people prefer, for example, "صد و هفتاد" over its other form "یکصد و هفتاد". This library uses the second form which is the form used on official Iranian banknotes. But it can be changed:
 
-::
+.. code-block:: python
 
 	>>> number2farsiword.cardinal_words(170)
 	'یکصد و هفتاد'
@@ -54,7 +54,7 @@ Command line
 
 The program can also be invoked from the command line:
 
-::
+.. code-block::
 
 	>python number2farsiword.py
 	usage: number2farsiword.py [-h] [--ordinal] [--cardinal] number
@@ -63,4 +63,3 @@ The program can also be invoked from the command line:
 	سیزدهم
 	>python number2farsiword.py -o 13
 	سیزدهم
-
