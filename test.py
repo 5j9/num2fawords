@@ -6,7 +6,7 @@ class Number2FarsiWord(TestCase):
 
     """Test number2farsiword module."""
 
-    def test_cardinal(self):
+    def test_non_negative_cardinal(self):
         """Test the cardinal_words function."""
         assert_equal = self.assertEqual
         assert_equal(cardinal_words(0), 'صفر')
@@ -60,12 +60,12 @@ class Number2FarsiWord(TestCase):
             ' و نهصد و نود و نه',
         )
 
-    def test_negative_nubmers(self):
+    def test_negative_numbers(self):
         assert_equal = self.assertEqual
-        assert_equal(cardinal_words(-5), 'منفی پنج')
+        assert_equal(ordinal_words(-5), 'منفی پنجم')
         assert_equal(cardinal_words(-5), 'منفی پنج')
 
-    def test_ordinal_words(self):
+    def test_non_negative_ordinal_words(self):
         """Test the ordinal_words function."""
         assert_equal = self.assertEqual
         assert_equal(ordinal_words(0), 'صفرم')
@@ -99,7 +99,17 @@ class Number2FarsiWord(TestCase):
             ordinal_words(999555),
             'نهصد و نود و نه هزار و پانصد و پنجاه و پنجم',
         )
-        # assert_equal(ordinal_words(1000000), 'یک میلیونم')
+        assert_equal(ordinal_words(1000000), 'یک میلیونم')
+
+    def test_float(self):
+        self.assertEqual(cardinal_words(0.0), 'صفر')
+        self.assertEqual(cardinal_words(1.0), 'یک')
+        self.assertEqual(cardinal_words(1.1), 'یک ممیز یک دهم')
+        self.assertEqual(cardinal_words(1.100), 'یک ممیز یک دهم')
+        self.assertEqual(cardinal_words(0.001), 'یک هزارم')
+        self.assertEqual(cardinal_words(0.1001), 'یک هزار و یک ده هزارم')
+        self.assertEqual(cardinal_words(5.45), 'پنج ممیز چهل و پنج صدم')
+        # self.assertEqual(cardinal_words(0.000001), 'یک میلیونم')
 
 
 if __name__ == '__main':

@@ -71,13 +71,14 @@ SCALE = [
     ' کوانتینیارد',
 ]
 
-ASHAR = ['', 'دهم', 'صدم']
+ASHAR = ['', ' دهم', ' صدم']
 ASHAR.extend(chain.from_iterable(
-    (i, 'ده ' + i, 'صد ' + i) for i in (i.rstrip() + 'م' for i in SCALE[1:])
+    (i, ' ده' + i, ' صد' + i)
+    for i in (i + 'م' for i in SCALE[1:])
 ))
 
 
-def _three_digit_words(threedigit: str):
+def _three_digit_words(threedigit: str) -> str:
     """Return the word representation of threedigit."""
     sadgan, dahgan, yekan = threedigit
     if sadgan == '0' or threedigit[1:] == '00':
@@ -93,8 +94,16 @@ def _three_digit_words(threedigit: str):
     return words + YEKAN[int(yekan)]
 
 
-def cardinal_words(number: Union[int, float]):
-    str_num = str(number)
+def cardinal_words(number: Union[int, float, str]) -> str:
+    if isinstance(number, str):
+        str_num = number
+        try:
+            number = int(number)
+        except ValueError:
+            number = float(number)
+    else:
+        str_num = str(number)
+
     if number == 0:
         return 'صفر'
     if number < 0:
@@ -103,21 +112,33 @@ def cardinal_words(number: Union[int, float]):
     else:
         negative = ''
 
-    if len(str_num) > len(SCALE) * 3:
-        raise ValueError('out of range')
+    if isinstance(number, float):
+        str_int, _, str_dec = str_num.rpartition('.')
+        int_dec = int(str_dec)
+        if str_int == '0':
+            return cardinal_words(int_dec) + ASHAR[len(str_dec)]
+        if int_dec:
+            dec_words = ' ممیز ' + cardinal_words(int_dec) + ASHAR[len(str_dec)]
+        else:
+            dec_words = ''
+    else:
+        str_int = str_num
+        dec_words = ''
 
-    length = len(str_num)
+    length = len(str_int)
+    if length > len(SCALE) * 3:
+        raise ValueError('out of range')
 
     modulo_3 = length % 3
     if modulo_3:
-        str_num = '0' * (3 - modulo_3) + str_num
+        str_int = '0' * (3 - modulo_3) + str_int
         length += 3 - modulo_3
 
     groups = length // 3
     group = groups
     words = ''
     while group > 0:
-        three_digit = str_num[group * 3 - 3:group * 3]
+        three_digit = str_int[group * 3 - 3:group * 3]
         word3 = _three_digit_words(three_digit)
         if word3 and group != groups:
             if words:
@@ -128,10 +149,10 @@ def cardinal_words(number: Union[int, float]):
             words = word3 + words
         group -= 1
 
-    return negative + words
+    return negative + words + dec_words
 
 
-def ordinal_words(number: Union[int, float]):
+def ordinal_words(number: Union[int, str])-> str:
     """Return the ordinal_words form of the number converted to words."""
     words = cardinal_words(number)
     if words[-2:] == 'سه':
@@ -140,7 +161,8 @@ def ordinal_words(number: Union[int, float]):
 
 
 if __name__ == '__main__':
+    from ast import literal_eval
     while True:
-        n = input('Enter your number:\n')
+        n = literal_eval(input('Enter your number:\n'))
         print(cardinal_words(n))
         print(ordinal_words(n))
