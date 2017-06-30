@@ -42,21 +42,20 @@ This is the default setting. If you'd like to use "ممیز" instead of "و" for
 
 .. code-block:: python
 
-	>>> import num2fawords
-	>>> num2fawords.DECIMAL_SEPARATOR  # default value:
+	>>> from num2fawords import DECIMAL_SEPARATOR
+	>>> DECIMAL_SEPARATOR  # default value:
 	' و '
-	>>> num2fawords.DECIMAL_SEPARATOR = ' ممیز '
-	>>> num2fawords.cardinal_words(19.75)
+	>>> DECIMAL_SEPARATOR = ' ممیز '
+	>>> cardinal_words(19.75)
 	'نوزده ممیز هفتاد و پنج صدم'
 
 Also some people prefer, for example, "صد و هفتاد" over its other form "یکصد و هفتاد". This library uses the second form which is the form used on official Iranian banknotes. But it can be changed:
 
 .. code-block:: python
 
-	>>> num2fawords.cardinal_words(170)
+	>>> from num2fawords import HUNDREDS
+	>>> cardinal_words(170)
 	'یکصد و هفتاد'
-	>>> num2fawords.SADGAN
-	['', 'یکصد', 'دویست', 'سیصد', 'چهارصد', 'پانصد', 'ششصد', 'هفتصد', 'هشتصد', 'نهصد']
-	>>> num2fawords.SADGAN[1] = 'صد'
-	>>> num2fawords.cardinal_words(170)
+	>>> HUNDREDS[1] = 'صد'
+	>>> cardinal_words(170)
 	'صد و هفتاد'
