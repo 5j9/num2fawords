@@ -117,6 +117,7 @@ def cardinal_words(number: _Union[int, float, str]) -> str:
     if isinstance(number, float):
         base, e_, exponent = str_num.rpartition('e-')
         if e_:
+            # Todo: Can the exponent be out of ASHAR range? Raise ValueError.
             if base[1:2] == '.':
                 return cardinal_words(base[:1] + base[2:]) + \
                        ASHAR[int(exponent) + len(base) - 2]
