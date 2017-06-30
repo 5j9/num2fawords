@@ -1,7 +1,11 @@
 from unittest import TestCase, main
 
 from num2fawords import cardinal_words, ordinal_words
-
+try:
+    from subprocess import run, PIPE
+except ImportError:
+    # New in version 3.5.
+    run = None
 
 class Number2FarsiWord(TestCase):
 
@@ -130,6 +134,16 @@ class Number2FarsiWord(TestCase):
         self.assertEqual(cardinal_words('42'), 'چهل و دو')
         self.assertEqual(cardinal_words('3.14'), 'سه ممیز چهارده صدم')
 
+    if run:
+        def test_command_line(self):
+            completedprocess = run(
+                'num2fawords 13 -o', stdout=PIPE, stderr=PIPE,
+            )
+            self.assertEqual(
+                completedprocess.stdout.strip(),
+                'سیزدهم'.encode(),
+                completedprocess.stderr,
+            )
 
 if __name__ == '__main__':
     main()
