@@ -65,6 +65,7 @@ class Number2FarsiWord(TestCase):
         assert_equal = self.assertEqual
         assert_equal(ordinal_words(-5), 'منفی پنجم')
         assert_equal(cardinal_words(-5), 'منفی پنج')
+        assert_equal(cardinal_words('-5.5'), 'منفی پنج و پنج دهم')
 
     def test_non_negative_ordinal_words(self):
         """Test the ordinal_words function."""
