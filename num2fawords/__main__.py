@@ -2,7 +2,7 @@
 
 from argparse import ArgumentParser
 
-from num2fawords import cardinal_words, ordinal_words
+from num2fawords import words, ordinal_words
 
 
 parser = ArgumentParser()
@@ -17,4 +17,4 @@ args = parser.parse_args()
 if args.ordinal:
     print(ordinal_words(args.number))
 else:
-    print(cardinal_words(args.number))
+    print(words(args.number))

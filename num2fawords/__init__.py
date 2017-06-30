@@ -82,21 +82,21 @@ DECIMAL_SEPARATOR = ' و '
 
 def _three_digit_words(threedigit: str) -> str:
     """Return the word representation of threedigit."""
-    sadgan, dahgan, yekan = threedigit
-    if sadgan == '0' or threedigit[1:] == '00':
-        words = HUNDREDS[int(sadgan)]
+    h, t, o = threedigit
+    if h == '0' or threedigit[1:] == '00':
+        w = HUNDREDS[int(h)]
     else:
-        words = HUNDREDS[int(sadgan)] + ' و '
-    if dahgan == '1':
-        return words + TEN_TO_TWENTY[int(yekan)]
-    if yekan == '0' or dahgan == '0':
-        words += TENS[int(dahgan)]
+        w = HUNDREDS[int(h)] + ' و '
+    if t == '1':
+        return w + TEN_TO_TWENTY[int(o)]
+    if o == '0' or t == '0':
+        w += TENS[int(t)]
     else:
-        words += TENS[int(dahgan)] + ' و '
-    return words + ONES[int(yekan)]
+        w += TENS[int(t)] + ' و '
+    return w + ONES[int(o)]
 
 
-def cardinal_words(number: _Union[int, float, str]) -> str:
+def words(number: _Union[int, float, str]) -> str:
     if isinstance(number, str):
         str_num = number
         try:
@@ -120,17 +120,17 @@ def cardinal_words(number: _Union[int, float, str]) -> str:
             # Todo: Can the exponent be out of DECIMAL_PLACES range? If yes,
             # raise ValueError.
             if base[1:2] == '.':
-                return cardinal_words(base[:1] + base[2:]) + \
+                return words(base[:1] + base[2:]) + \
                        DECIMAL_PLACES[int(exponent) + len(base) - 2]
             else:
-                return cardinal_words(base) + \
+                return words(base) + \
                        DECIMAL_PLACES[int(exponent)]
         str_int, _, str_dec = str_num.rpartition('.')
         int_dec = int(str_dec)
         if str_int == '0':
-            return cardinal_words(int_dec) + DECIMAL_PLACES[len(str_dec)]
+            return words(int_dec) + DECIMAL_PLACES[len(str_dec)]
         if int_dec:
-            dec_words = DECIMAL_SEPARATOR + cardinal_words(int_dec) + \
+            dec_words = DECIMAL_SEPARATOR + words(int_dec) + \
                         DECIMAL_PLACES[len(str_dec)]
         else:
             dec_words = ''
@@ -149,25 +149,25 @@ def cardinal_words(number: _Union[int, float, str]) -> str:
 
     groups = length // 3
     group = groups
-    words = ''
+    int_words = ''
     while group > 0:
         three_digit = str_int[group * 3 - 3:group * 3]
         word3 = _three_digit_words(three_digit)
         if word3 and group != groups:
-            if words:
-                words = word3 + CLASSES[groups - group] + ' و ' + words
+            if int_words:
+                int_words = word3 + CLASSES[groups - group] + ' و ' + int_words
             else:
-                words = word3 + CLASSES[groups - group]
+                int_words = word3 + CLASSES[groups - group]
         else:
-            words = word3 + words
+            int_words = word3 + int_words
         group -= 1
 
-    return negative + words + dec_words
+    return negative + int_words + dec_words
 
 
 def ordinal_words(number: _Union[int, str])-> str:
     """Return the ordinal_words form of the number converted to words."""
-    words = cardinal_words(number)
-    if words[-2:] == 'سه':
-        return words[:-2] + 'سوم'
-    return words + 'م'
+    w = words(number)
+    if w[-2:] == 'سه':
+        return w[:-2] + 'سوم'
+    return w + 'م'
