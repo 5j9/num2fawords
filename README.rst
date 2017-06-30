@@ -1,5 +1,10 @@
-number2farsiword
-================
+.. image:: https://travis-ci.org/5j9/num2fawords.svg?branch=master
+	:target: https://travis-ci.org/5j9/num2fawords
+.. image:: https://codecov.io/github/5j9/num2fawords/coverage.svg?branch=master
+	:target: https://codecov.io/github/5j9/num2fawords
+
+num2fawords
+===========
 
 This package provides functions to convert a number (int or float) to a Persian
 word form.
@@ -9,7 +14,7 @@ Usage
 
 .. code-block:: python
 
-	>>> from number2farsiword import cardinal_words, ordinal_words
+	>>> from num2fawords import cardinal_words, ordinal_words
 	>>> cardinal_words(1984)
 	'یک هزار و نهصد و هشتاد و چهار'
 	>>> ordinal_words(1232)
@@ -30,23 +35,23 @@ This is the default setting. If you'd like to ommit the word "ممیز" from the
 
 .. code-block:: python
 
-	>>> import number2farsiword
-	>>> number2farsiword.MOMAYEZ  # default value:
+	>>> import num2fawords
+	>>> num2fawords.MOMAYEZ  # default value:
 	' ممیز '
-	>>> number2farsiword.MOMAYEZ = ' و '
-	>>> number2farsiword.cardinal_words(19.75)
+	>>> num2fawords.MOMAYEZ = ' و '
+	>>> num2fawords.cardinal_words(19.75)
 	'نوزده و هفتاد و پنج صدم'
 
 Also some people prefer, for example, "صد و هفتاد" over its other form "یکصد و هفتاد". This library uses the second form which is the form used on official Iranian banknotes. But it can be changed:
 
 .. code-block:: python
 
-	>>> number2farsiword.cardinal_words(170)
+	>>> num2fawords.cardinal_words(170)
 	'یکصد و هفتاد'
-	>>> number2farsiword.SADGAN
+	>>> num2fawords.SADGAN
 	['', 'یکصد', 'دویست', 'سیصد', 'چهارصد', 'پانصد', 'ششصد', 'هفتصد', 'هشتصد', 'نهصد']
-	>>> number2farsiword.SADGAN[1] = 'صد'
-	>>> number2farsiword.cardinal_words(170)
+	>>> num2fawords.SADGAN[1] = 'صد'
+	>>> num2fawords.cardinal_words(170)
 	'صد و هفتاد'
 
 Command line
@@ -56,10 +61,10 @@ The program can also be invoked from the command line:
 
 .. code-block::
 
-	>python number2farsiword.py
-	usage: number2farsiword.py [-h] [--ordinal] [--cardinal] number
-	number2farsiword.py: error: the following arguments are required: number
-	>python number2farsiword.py 13
+	>python num2fawords.py
+	usage: num2fawords.py [-h] [--ordinal] [--cardinal] number
+	num2fawords.py: error: the following arguments are required: number
+	>python num2fawords.py 13
 	سیزدهم
-	>python number2farsiword.py -o 13
+	>python num2fawords.py -o 13
 	سیزدهم
