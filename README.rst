@@ -53,19 +53,3 @@ Also some people prefer, for example, "صد و هفتاد" over its other form "
 	>>> num2fawords.SADGAN[1] = 'صد'
 	>>> num2fawords.cardinal_words(170)
 	'صد و هفتاد'
-
-Command line
-============
-
-The program can also be invoked from the command line:
-
-.. code-block::
-
-	>python num2fawords
-	usage: num2fawords [-h] [--ordinal] number
-	num2fawords: error: the following arguments are required: number
-
-	>python num2fawords 13
-	سیزده
-	>python num2fawords -o 13
-	سیزدهم
