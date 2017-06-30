@@ -119,6 +119,17 @@ class Number2FarsiWord(TestCase):
             cardinal_words(0.000001111), 'یک هزار و یکصد و یازده میلیاردم'
         )
 
+    def test_value_errors(self):
+        self.assertRaises(
+            ValueError,
+            cardinal_words,
+            1234567890123456789012345678901234567
+        )
+
+    def test_str_input(self):
+        self.assertEqual(cardinal_words('42'), 'چهل و دو')
+        self.assertEqual(cardinal_words('3.14'), 'سه ممیز چهارده صدم')
+
 
 if __name__ == '__main__':
     main()
