@@ -120,5 +120,5 @@ class Number2FarsiWord(TestCase):
         )
 
 
-if __name__ == '__main':
+if __name__ == '__main__':
     main()
