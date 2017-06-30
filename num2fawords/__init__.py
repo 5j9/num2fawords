@@ -97,6 +97,8 @@ def _three_digit_words(threedigit: str) -> str:
 
 
 def words(number: _Union[int, float, str]) -> str:
+    """Return the word form of number."""
+    # Todo: Add support for fractions (fractions.Fraction)
     if isinstance(number, str):
         str_num = number
         try:
