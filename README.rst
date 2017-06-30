@@ -62,9 +62,10 @@ The program can also be invoked from the command line:
 .. code-block::
 
 	>python num2fawords
-	usage: num2fawords [-h] [--ordinal] [--cardinal] number
+	usage: num2fawords [-h] [--ordinal] number
 	num2fawords: error: the following arguments are required: number
+
 	>python num2fawords 13
-	سیزدهم
+	سیزده
 	>python num2fawords -o 13
 	سیزدهم

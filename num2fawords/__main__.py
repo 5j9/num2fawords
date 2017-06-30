@@ -13,16 +13,8 @@ parser.add_argument(
     '--ordinal', '-o',
     help='convert to ordinal from', action='store_true',
 )
-parser.add_argument(
-    '--cardinal', '-c',
-    help='convert to cardinal form', action='store_true',
-)
 args = parser.parse_args()
-if args.cardinal:
-    if args.ordinal:
-        print(cardinal_words(args.number))
-        print(ordinal_words(args.number))
-    else:
-        print(cardinal_words(args.number))
-else:
+if args.ordinal:
     print(ordinal_words(args.number))
+else:
+    print(cardinal_words(args.number))
