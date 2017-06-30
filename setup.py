@@ -5,6 +5,7 @@ from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
 from os import path
+from sys import version_info
 
 here = path.abspath(path.dirname(__file__))
 
@@ -78,7 +79,7 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['typing'],
+    install_requires=['typing'] if version_info < (3, 5) else [],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,
