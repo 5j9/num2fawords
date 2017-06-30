@@ -9,6 +9,13 @@ num2fawords
 This package provides functions to convert a number (int or float) to a Persian
 word form.
 
+installation
+============
+
+Python 3.3+ is required.
+
+Install using `pip install num2fawords` command.
+
 Usage
 =====
 
