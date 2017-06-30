@@ -1,7 +1,7 @@
 """Provide functions to convert a number (int) to Persian words."""
 
-from typing import Union
-from itertools import chain
+from typing import Union as _Union
+from itertools import chain as _chain
 
 
 YEKAN = [
@@ -72,7 +72,7 @@ SCALE = [
 ]
 
 ASHAR = ['', ' دهم', ' صدم']
-ASHAR.extend(chain.from_iterable(
+ASHAR.extend(_chain.from_iterable(
     (i, ' ده' + i, ' صد' + i)
     for i in (i + 'م' for i in SCALE[1:])
 ))
@@ -96,7 +96,7 @@ def _three_digit_words(threedigit: str) -> str:
     return words + YEKAN[int(yekan)]
 
 
-def cardinal_words(number: Union[int, float, str]) -> str:
+def cardinal_words(number: _Union[int, float, str]) -> str:
     if isinstance(number, str):
         str_num = number
         try:
@@ -163,7 +163,7 @@ def cardinal_words(number: Union[int, float, str]) -> str:
     return negative + words + dec_words
 
 
-def ordinal_words(number: Union[int, str])-> str:
+def ordinal_words(number: _Union[int, str])-> str:
     """Return the ordinal_words form of the number converted to words."""
     words = cardinal_words(number)
     if words[-2:] == 'سه':
