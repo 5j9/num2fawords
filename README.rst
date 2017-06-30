@@ -42,10 +42,10 @@ This is the default setting. If you'd like to use "ممیز" instead of "و" for
 
 .. code-block:: python
 
-	>>> from num2fawords import DECIMAL_SEPARATOR
-	>>> DECIMAL_SEPARATOR  # default value:
+	>>> import num2fawords
+	>>> num2fawords.DECIMAL_SEPARATOR  # default value:
 	' و '
-	>>> DECIMAL_SEPARATOR = ' ممیز '
+	>>> num2fawords.DECIMAL_SEPARATOR = ' ممیز '
 	>>> cardinal_words(19.75)
 	'نوزده ممیز هفتاد و پنج صدم'
 
