@@ -1,0 +1,17 @@
+git:
+    depth: 1
+language: python
+install:
+    - pip install .
+    - pip install codecov
+script:
+    - cd num2farsiwords
+    - coverage run test.py
+python:
+    - "3.3"
+    - "3.4"
+    - "3.5"
+    - "3.6"
+    - "nightly"
+after_success:
+    - codecov
