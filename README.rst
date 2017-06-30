@@ -36,18 +36,18 @@ Use can also pass in floating point numbers:
 .. code-block:: python
 
 	>>> cardinal_words(19.75)
-	'نوزده ممیز هفتاد و پنج صدم'
+	'نوزده و هفتاد و پنج صدم'
 
-This is the default setting. If you'd like to ommit the word "ممیز" from the output and use "و" instead of it, you can:
+This is the default setting. If you'd like to use "ممیز" instead of "و" for decimal point, you can:
 
 .. code-block:: python
 
 	>>> import num2fawords
-	>>> num2fawords.MOMAYEZ  # default value:
-	' ممیز '
-	>>> num2fawords.MOMAYEZ = ' و '
+	>>> num2fawords.DECIMAL_SEPARATOR  # default value:
+	' و '
+	>>> num2fawords.DECIMAL_SEPARATOR = ' ممیز '
 	>>> num2fawords.cardinal_words(19.75)
-	'نوزده و هفتاد و پنج صدم'
+	'نوزده ممیز هفتاد و پنج صدم'
 
 Also some people prefer, for example, "صد و هفتاد" over its other form "یکصد و هفتاد". This library uses the second form which is the form used on official Iranian banknotes. But it can be changed:
 

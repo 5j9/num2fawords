@@ -77,7 +77,7 @@ ASHAR.extend(_chain.from_iterable(
     for i in (i + 'م' for i in SCALE[1:])
 ))
 
-MOMAYEZ = ' ممیز '
+DECIMAL_SEPARATOR = ' و '
 
 
 def _three_digit_words(threedigit: str) -> str:
@@ -129,7 +129,7 @@ def cardinal_words(number: _Union[int, float, str]) -> str:
         if str_int == '0':
             return cardinal_words(int_dec) + ASHAR[len(str_dec)]
         if int_dec:
-            dec_words = MOMAYEZ + cardinal_words(int_dec) + \
+            dec_words = DECIMAL_SEPARATOR + cardinal_words(int_dec) + \
                         ASHAR[len(str_dec)]
         else:
             dec_words = ''
