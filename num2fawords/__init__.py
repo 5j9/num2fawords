@@ -1,5 +1,11 @@
 """Provide functions to convert a number (int) to Persian words."""
 
+try:
+    from functools import singledispatch as _singledispatch
+except ImportError:
+    # sys.version_info < (3, 4)
+    # noinspection PyUnresolvedReferences
+    from singledispatch import singledispatch as _singledispatch
 from typing import Union as _Union
 from itertools import chain as _chain
 
@@ -96,50 +102,64 @@ def _three_digit_words(threedigit: str) -> str:
     return w + ONES[int(o)]
 
 
+@_singledispatch
 def words(number: _Union[int, float, str]) -> str:
     """Return the word form of number."""
     # Todo: Add support for fractions (fractions.Fraction)
-    if isinstance(number, str):
-        str_num = number
-        try:
-            number = int(number)
-        except ValueError:
-            number = float(number)
-    else:
-        str_num = str(number)
+    # Unregistered type (str, Decimal, etc.)
+    try:
+        return words.registry[int](int(number))
+    except ValueError:
+            return words.registry[float](float(number))
 
+
+@words.register(int)
+def _(number: int) -> str:
     if number == 0:
         return 'صفر'
+    if number < 0:
+        return'منفی ' + _natural_words(str(number)[1:])
+    else:
+        return _natural_words(str(number))
+
+
+@words.register(float)
+def _(number: float) -> str:
+    """Return the fa-word form for the given float."""
+    if number == 0:
+        return 'صفر'
+
+    str_num = str(number)
     if number < 0:
         str_num = str_num[1:]
         negative = 'منفی '
     else:
         negative = ''
 
-    if isinstance(number, float):
-        base, e_, exponent = str_num.rpartition('e-')
-        if e_:
-            # Todo: Can the exponent be out of DECIMAL_PLACES range? If yes,
-            # raise ValueError.
-            if base[1:2] == '.':
-                return words(base[:1] + base[2:]) + \
-                       DECIMAL_PLACES[int(exponent) + len(base) - 2]
-            else:
-                return words(base) + \
-                       DECIMAL_PLACES[int(exponent)]
-        str_int, _, str_dec = str_num.rpartition('.')
-        int_dec = int(str_dec)
-        if str_int == '0':
-            return words(int_dec) + DECIMAL_PLACES[len(str_dec)]
-        if int_dec:
-            dec_words = DECIMAL_SEPARATOR + words(int_dec) + \
-                        DECIMAL_PLACES[len(str_dec)]
-        else:
-            dec_words = ''
-    else:
-        str_int = str_num
-        dec_words = ''
+    base, e_, exponent = str_num.rpartition('e-')
 
+    if e_:
+        # Todo: Can the exponent be out of DECIMAL_PLACES range? If yes,
+        # raise ValueError.
+        if base[1:2] == '.':
+            return _natural_words(base[:1] + base[2:]) + \
+                   DECIMAL_PLACES[int(exponent) + len(base) - 2]
+        else:
+            return _natural_words(base) + \
+                   DECIMAL_PLACES[int(exponent)]
+
+    str_int, _, str_dec = str_num.rpartition('.')
+    if str_int == '0':
+        return _natural_words(str_dec) + DECIMAL_PLACES[len(str_dec)]
+    if str_dec != '0':
+        dec_words = DECIMAL_SEPARATOR + _natural_words(str_dec) + \
+                    DECIMAL_PLACES[len(str_dec)]
+        return negative + _natural_words(str_int) + dec_words
+
+    return negative + _natural_words(str_int)
+
+
+def _natural_words(str_int: str) -> str:
     length = len(str_int)
     if length > len(CLASSES) * 3:
         raise ValueError('out of range')
@@ -151,20 +171,21 @@ def words(number: _Union[int, float, str]) -> str:
 
     groups = length // 3
     group = groups
-    int_words = ''
+    natural_words = ''
     while group > 0:
         three_digit = str_int[group * 3 - 3:group * 3]
         word3 = _three_digit_words(three_digit)
         if word3 and group != groups:
-            if int_words:
-                int_words = word3 + CLASSES[groups - group] + ' و ' + int_words
+            if natural_words:
+                natural_words = word3 + CLASSES[groups - group] + \
+                                ' و ' + natural_words
             else:
-                int_words = word3 + CLASSES[groups - group]
+                natural_words = word3 + CLASSES[groups - group]
         else:
-            int_words = word3 + int_words
+            natural_words = word3 + natural_words
         group -= 1
 
-    return negative + int_words + dec_words
+    return natural_words
 
 
 def ordinal_words(number: _Union[int, str])-> str:

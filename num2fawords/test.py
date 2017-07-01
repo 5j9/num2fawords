@@ -1,7 +1,10 @@
 from unittest import TestCase, main
+from decimal import Decimal, getcontext
 
 from num2fawords import words, ordinal_words
 
+
+getcontext()
 
 class Number2FarsiWord(TestCase):
 
@@ -130,6 +133,12 @@ class Number2FarsiWord(TestCase):
     def test_str_input(self):
         self.assertEqual(words('42'), 'چهل و دو')
         self.assertEqual(words('3.14'), 'سه و چهارده صدم')
+
+    def test_decimal_input(self):
+        self.assertEqual(words(Decimal('3.0')), 'سه')
+
+    def test_unsupported_input_type(self):
+        self.assertRaises(TypeError, words, [1])
 
 
 if __name__ == '__main__':
