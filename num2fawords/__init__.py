@@ -107,11 +107,11 @@ def _three_digit_words(threedigit: str) -> str:
 # noinspection PyUnusedLocal
 @_singledispatch
 def words(
-    number: _Union[int, float, str, Decimal],
+    number: _Union[int, float, str, Decimal, Fraction],
     plus: str='',
     minus: str='منفی ',
     decimal_separator: str=' و ',
-    fraction_separator: str=' و ',
+    fraction_separator: str=' ',
     ordinal_denominator: str=' و ',
 ) -> str:
     raise TypeError('invalid input type for words function', number)
@@ -119,11 +119,11 @@ def words(
 
 @words.register(str)
 def _(
-    number: _Union[int, float, str, Decimal],
+    number: str,
     plus: str='',
     minus: str='منفی ',
     decimal_separator: str=' و ',
-    fraction_separator: str=' و ',
+    fraction_separator: str=' ',
     ordinal_denominator: str=' و ',
 ) -> str:
     """Return the word form of number."""
@@ -141,33 +141,32 @@ def _(
     else:
         sign = ''
 
-    nominator, e, denominator = number.partition('/')
+    numerator, e, denominator = number.partition('/')
 
     if denominator:
         if ordinal_denominator:
             return (
                 sign
-                + _no_fraction_words(nominator, decimal_separator)
+                + _no_fraction_words(numerator, decimal_separator)
                 + fraction_separator
                 + ordinal_words(denominator)
             )
         return (
             sign
-            + _no_fraction_words(nominator, decimal_separator)
+            + _no_fraction_words(numerator, decimal_separator)
             + fraction_separator
             + _no_fraction_words(denominator, decimal_separator)
         )
-    return sign + _no_fraction_words(nominator, decimal_separator)
+    return sign + _no_fraction_words(numerator, decimal_separator)
 
 
-# noinspection PyUnusedLocal
 @words.register(Decimal)
 def _(
     number: Decimal,
     plus: str = '',
     minus: str = 'منفی ',
     decimal_separator: str = ' و ',
-    fraction_separator: str = ' و ',
+    fraction_separator: str = ' ',
     ordinal_denominator: str = ' و ',
 ) -> str:
     return words.registry[str](
@@ -180,6 +179,30 @@ def _(
     )
 
 
+@words.register(Fraction)
+def _(
+    number: Fraction,
+    plus: str = '',
+    minus: str = 'منفی ',
+    decimal_separator: str = ' و ',
+    fraction_separator: str = ' ',
+    ordinal_denominator: str = ' و ',
+) -> str:
+    numerator = number.numerator
+    if numerator < 0:
+        sign = minus
+        numerator = str(number.numerator)[1:]
+    else:
+        sign = ''
+        numerator = str(number.numerator)
+    return (
+        sign
+        + _no_fraction_words(numerator, decimal_separator)
+        + fraction_separator
+        + ordinal_words(number.denominator)
+    )
+
+
 # noinspection PyUnusedLocal
 @words.register(int)
 def _(
@@ -187,7 +210,7 @@ def _(
     plus: str = '',
     minus: str = 'منفی ',
     decimal_separator: str = ' و ',
-    fraction_separator: str = ' و ',
+    fraction_separator: str = ' ',
     ordinal_denominator: str = ' و ',
 ) -> str:
     """Return the fa-word form for the given int."""
@@ -205,7 +228,7 @@ def _(
     plus: str = '',
     minus: str = 'منفی ',
     decimal_separator: str = ' و ',
-    fraction_separator: str = ' و ',
+    fraction_separator: str = ' ',
     ordinal_denominator: str = ' و ',
 ) -> str:
     """Return the fa-word form for the given float."""
@@ -227,7 +250,7 @@ def _no_fraction_words(
         return (
             _no_exponent_words(base, decimal_separator)
             + ' ضربدر ده به توان '
-            + words(exponent, decimal_separator)
+            + words(int(exponent), decimal_separator)
         )
     return _no_exponent_words(base, decimal_separator)
 

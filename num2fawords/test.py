@@ -167,6 +167,9 @@ class Number2FarsiWord(TestCase):
     def test_unsupported_input_type(self):
         self.assertRaises(TypeError, words, [])
 
+    def test_fractions(self):
+        self.assertEqual(words(Fraction(16, -10)), 'منفی هشت پنجم')
+
 
 # Todo: add test for persian numbers.
 
