@@ -1,5 +1,8 @@
 """Provide functions to convert a number (int) to Persian words."""
 
+from decimal import Decimal
+from fractions import Fraction
+from itertools import chain as _chain
 try:
     from functools import singledispatch as _singledispatch
 except ImportError:
@@ -7,7 +10,6 @@ except ImportError:
     # noinspection PyUnresolvedReferences
     from singledispatch import singledispatch as _singledispatch
 from typing import Union as _Union
-from itertools import chain as _chain
 
 
 ONES = [
@@ -83,7 +85,7 @@ DECIMAL_PLACES.extend(_chain.from_iterable(
     for i in (i + 'م' for i in CLASSES[1:])
 ))
 
-DECIMAL_SEPARATOR = ' و '
+_NORMALIZATION_TABLE = str.maketrans('E٫', 'e.', '_٬,')
 
 
 def _three_digit_words(threedigit: str) -> str:
@@ -102,78 +104,172 @@ def _three_digit_words(threedigit: str) -> str:
     return w + ONES[int(o)]
 
 
+# noinspection PyUnusedLocal
 @_singledispatch
-def words(number: _Union[int, float, str]) -> str:
+def words(
+    number: _Union[int, float, str, Decimal],
+    plus: str='',
+    minus: str='منفی ',
+    decimal_separator: str=' و ',
+    fraction_separator: str=' و ',
+    ordinal_denominator: str=' و ',
+) -> str:
+    raise TypeError('invalid input type for words function', number)
+
+
+@words.register(str)
+def _(
+    number: _Union[int, float, str, Decimal],
+    plus: str='',
+    minus: str='منفی ',
+    decimal_separator: str=' و ',
+    fraction_separator: str=' و ',
+    ordinal_denominator: str=' و ',
+) -> str:
     """Return the word form of number."""
-    # Todo: Add support for fractions (fractions.Fraction)
-    # Unregistered type (str, Decimal, etc.)
-    try:
-        return words.registry[int](int(number))
-    except ValueError:
-            return words.registry[float](float(number))
+    # Normalize the str
+    number = str(number).strip().translate(_NORMALIZATION_TABLE)
+
+    # sign
+    c0 = number[0]
+    if c0 == '-':
+        sign = minus
+        number = number[1:]
+    elif c0 == '+':
+        sign = plus
+        number = number[1:]
+    else:
+        sign = ''
+
+    nominator, e, denominator = number.partition('/')
+
+    if denominator:
+        if ordinal_denominator:
+            return (
+                sign
+                + _no_fraction_words(nominator, decimal_separator)
+                + fraction_separator
+                + ordinal_words(denominator)
+            )
+        return (
+            sign
+            + _no_fraction_words(nominator, decimal_separator)
+            + fraction_separator
+            + _no_fraction_words(denominator, decimal_separator)
+        )
+    return sign + _no_fraction_words(nominator, decimal_separator)
 
 
+# noinspection PyUnusedLocal
+@words.register(Decimal)
+def _(
+    number: Decimal,
+    plus: str = '',
+    minus: str = 'منفی ',
+    decimal_separator: str = ' و ',
+    fraction_separator: str = ' و ',
+    ordinal_denominator: str = ' و ',
+) -> str:
+    return words.registry[str](
+        str(number),
+        plus,
+        minus,
+        decimal_separator,
+        fraction_separator,
+        ordinal_denominator,
+    )
+
+
+# noinspection PyUnusedLocal
 @words.register(int)
-def _(number: int) -> str:
+def _(
+    number: int,
+    plus: str = '',
+    minus: str = 'منفی ',
+    decimal_separator: str = ' و ',
+    fraction_separator: str = ' و ',
+    ordinal_denominator: str = ' و ',
+) -> str:
+    """Return the fa-word form for the given int."""
     if number == 0:
         return 'صفر'
     if number < 0:
-        return'منفی ' + _natural_words(str(number)[1:])
-    else:
-        return _natural_words(str(number))
+        return minus + _natural_words(str(number)[1:])
+    return _natural_words(str(number))
 
 
+# noinspection PyUnusedLocal
 @words.register(float)
-def _(number: float) -> str:
+def _(
+    number: float,
+    plus: str = '',
+    minus: str = 'منفی ',
+    decimal_separator: str = ' و ',
+    fraction_separator: str = ' و ',
+    ordinal_denominator: str = ' و ',
+) -> str:
     """Return the fa-word form for the given float."""
     if number == 0:
         return 'صفر'
-
     str_num = str(number)
     if number < 0:
-        str_num = str_num[1:]
-        negative = 'منفی '
-    else:
-        negative = ''
-
-    base, e_, exponent = str_num.rpartition('e-')
-
-    if e_:
-        # Todo: Can the exponent be out of DECIMAL_PLACES range? If yes,
-        # raise ValueError.
-        if base[1:2] == '.':
-            return _natural_words(base[:1] + base[2:]) + \
-                   DECIMAL_PLACES[int(exponent) + len(base) - 2]
-        else:
-            return _natural_words(base) + \
-                   DECIMAL_PLACES[int(exponent)]
-
-    str_int, _, str_dec = str_num.rpartition('.')
-    if str_int == '0':
-        return _natural_words(str_dec) + DECIMAL_PLACES[len(str_dec)]
-    if str_dec != '0':
-        dec_words = DECIMAL_SEPARATOR + _natural_words(str_dec) + \
-                    DECIMAL_PLACES[len(str_dec)]
-        return negative + _natural_words(str_int) + dec_words
-
-    return negative + _natural_words(str_int)
+        return _no_fraction_words(str_num[1:], decimal_separator)
+    return _no_fraction_words(str_num, decimal_separator)
 
 
-def _natural_words(str_int: str) -> str:
-    length = len(str_int)
+def _no_fraction_words(
+    number: str,
+    decimal_separator: str,
+) -> str:
+    # exponent
+    base, e, exponent = number.partition('e')
+    if exponent:
+        return (
+            _no_exponent_words(base, decimal_separator)
+            + ' ضربدر ده به توان '
+            + words(exponent, decimal_separator)
+        )
+    return _no_exponent_words(base, decimal_separator)
+
+
+def _no_exponent_words(
+    number: str,
+    decimal_separator: str,
+) -> str:
+    before_p, p, after_p = number.partition('.')
+    if after_p:
+        if before_p == '0':
+            if after_p == '0':
+                return 'صفر'
+            return _natural_words(after_p) + DECIMAL_PLACES[len(after_p)]
+        if after_p != '0':
+            return (
+                _natural_words(before_p)
+                + decimal_separator
+                + _natural_words(after_p)
+                + DECIMAL_PLACES[len(after_p)]
+            )
+        return _natural_words(before_p)
+    return _natural_words(before_p)
+
+
+def _natural_words(number: str) -> str:
+    if number == '0':
+        return 'صفر'
+    length = len(number)
     if length > len(CLASSES) * 3:
         raise ValueError('out of range')
 
     modulo_3 = length % 3
     if modulo_3:
-        str_int = '0' * (3 - modulo_3) + str_int
+        number = '0' * (3 - modulo_3) + number
         length += 3 - modulo_3
 
     groups = length // 3
     group = groups
     natural_words = ''
     while group > 0:
-        three_digit = str_int[group * 3 - 3:group * 3]
+        three_digit = number[group * 3 - 3:group * 3]
         word3 = _three_digit_words(three_digit)
         if word3 and group != groups:
             if natural_words:

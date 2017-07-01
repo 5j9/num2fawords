@@ -1,10 +1,10 @@
+from fractions import Fraction
+from decimal import Decimal
+from math import pi
 from unittest import TestCase, main
-from decimal import Decimal, getcontext
 
 from num2fawords import words, ordinal_words
 
-
-getcontext()
 
 class Number2FarsiWord(TestCase):
 
@@ -14,6 +14,7 @@ class Number2FarsiWord(TestCase):
         """Test the words function."""
         assert_equal = self.assertEqual
         assert_equal(words(0), 'صفر')
+        assert_equal(words('0'), 'صفر')
         assert_equal(words(1), 'یک')
         assert_equal(words(2), 'دو')
         assert_equal(words(3), 'سه')
@@ -74,6 +75,7 @@ class Number2FarsiWord(TestCase):
         """Test the ordinal_words function."""
         assert_equal = self.assertEqual
         assert_equal(ordinal_words(0), 'صفرم')
+        assert_equal(ordinal_words('0'), 'صفرم')
         assert_equal(ordinal_words(1), 'یکم')
         assert_equal(ordinal_words(2), 'دوم')
         assert_equal(ordinal_words(3), 'سوم')
@@ -116,11 +118,28 @@ class Number2FarsiWord(TestCase):
         assert_equal(words(0.001), 'یک هزارم')
         assert_equal(words(0.1001), 'یک هزار و یک ده هزارم')
         assert_equal(words(5.45), 'پنج و چهل و پنج صدم')
-        assert_equal(words(0.000001), 'یک میلیونم')
-        assert_equal(words(0.0000011), 'یازده ده میلیونم')
-        assert_equal(words(0.00000111), 'یکصد و یازده صد میلیونم')
+
+        assert_equal(words(0.000001), 'یک ضربدر ده به توان منفی شش')
+        assert_equal(words('0.000001'), 'یک میلیونم')
+
         assert_equal(
-            words(0.000001111), 'یک هزار و یکصد و یازده میلیاردم'
+            words(0.0000011),
+            'یک و یک دهم ضربدر ده به توان منفی شش'
+        )
+        assert_equal(words('0.0000011'), 'یازده ده میلیونم',)
+
+        assert_equal(
+            words(0.00000111),
+            'یک و یازده صدم ضربدر ده به توان منفی شش',
+        )
+        assert_equal(words('0.00000111'), 'یکصد و یازده صد میلیونم')
+
+        assert_equal(
+            words(0.000001111),
+            'یک و یکصد و یازده هزارم ضربدر ده به توان منفی شش',
+        )
+        assert_equal(
+            words('0.000001111'), 'یک هزار و یکصد و یازده میلیاردم'
         )
 
     def test_value_errors(self):
@@ -136,10 +155,20 @@ class Number2FarsiWord(TestCase):
 
     def test_decimal_input(self):
         self.assertEqual(words(Decimal('3.0')), 'سه')
+        self.assertEqual(words(Decimal('-3.14')), 'منفی سه و چهارده صدم')
+        # Let's go beyond floats
+        beyond_float = words(Decimal(str(pi) + '238'))
+        self.assertNotEqual(beyond_float, words(pi))
+        self.assertTrue(beyond_float.endswith(''))
+        # Decimal(float('1.1'))
+        # == Decimal('1.100000000000000088817841970012523233890533447265625')
+        self.assertRaises(ValueError, words, Decimal(1.1))
 
     def test_unsupported_input_type(self):
-        self.assertRaises(TypeError, words, [1])
+        self.assertRaises(TypeError, words, [])
 
+
+# Todo: add test for persian numbers.
 
 if __name__ == '__main__':
     main()
