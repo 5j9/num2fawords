@@ -252,6 +252,25 @@ class Number2FarsiWord(TestCase):
             'یک و یک دهم ضربدر ده به قوهٔ منفی نه',
         )
 
+    def test_scientific_fraction_separator(self):
+        assert_equal = self.assertEqual
+        assert_equal(
+            words(
+                '1/2',
+                fraction_separator=' تقسیم بر ',
+                ordinal_denominator=False
+            ),
+            'یک تقسیم بر دو',
+        )
+        assert_equal(
+            words(
+                Fraction(1, 2),
+                fraction_separator=' تقسیم بر ',
+                ordinal_denominator=False,
+            ),
+            'یک تقسیم بر دو',
+        )
+
 
 if __name__ == '__main__':
     main()
