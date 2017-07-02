@@ -112,6 +112,7 @@ class Number2FarsiWord(TestCase):
     def test_float(self):
         assert_equal = self.assertEqual
         assert_equal(words(0.0), 'صفر')
+        assert_equal(words('0.0'), 'صفر')
         assert_equal(words(1.0), 'یک')
         assert_equal(words(1.1), 'یک و یک دهم')
         assert_equal(words(1.100), 'یک و یک دهم')
@@ -152,6 +153,7 @@ class Number2FarsiWord(TestCase):
     def test_str_input(self):
         self.assertEqual(words('42'), 'چهل و دو')
         self.assertEqual(words('3.14'), 'سه و چهارده صدم')
+        self.assertEqual(words('+1.1', positive='مثبت '), 'مثبت یک و یک دهم')
 
     def test_decimal_input(self):
         self.assertEqual(words(Decimal('3.0')), 'سه')

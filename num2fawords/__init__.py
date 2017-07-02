@@ -4,7 +4,7 @@ from decimal import Decimal
 from fractions import Fraction
 try:
     from functools import singledispatch as _singledispatch
-except ImportError:
+except ImportError:  # pragma: no cover
     # sys.version_info < (3, 4)
     # noinspection PyUnresolvedReferences
     from singledispatch import singledispatch as _singledispatch
