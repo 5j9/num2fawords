@@ -2,6 +2,8 @@
 	:target: https://travis-ci.org/5j9/num2fawords
 .. image:: https://codecov.io/github/5j9/num2fawords/coverage.svg?branch=master
 	:target: https://codecov.io/github/5j9/num2fawords
+.. image:: https://ci.appveyor.com/api/projects/status/github/5j9/num2fawords?svg=true&branch=master
+	:target: https://ci.appveyor.com/project/5j9/num2fawords
 
 num2fawords
 ===========
