@@ -185,19 +185,70 @@ class Number2FarsiWord(TestCase):
         assert_equal = self.assertEqual
         assert_equal(words(-1.1), 'منفی یک و یک دهم')
 
-    def test_word_arguments(self):
+    def test_positive(self):
         assert_equal = self.assertEqual
+        assert_equal(words(0, positive='مثبت '), 'صفر')
         assert_equal(words(7, positive='مثبت '), 'مثبت هفت')
+        assert_equal(
+            words(Fraction('1/2'), positive='مثبت '),
+            'مثبت یک دوم',
+        )
+        assert_equal(
+            words('1.1e+9', positive='مثبت '),
+            'یک و یک دهم در ده به توان مثبت نه',
+        )
+        assert_equal(
+            words(1.1e+9, positive='مثبت '),  # str(-1.1e+9) == 1100000000.0
+            'مثبت یک میلیارد و یکصد میلیون',
+        )
+
+    def test_negative(self):
+        assert_equal = self.assertEqual
         assert_equal(words(-2, negative='منهای '), 'منهای دو')
+        assert_equal(words('-2', negative='منهای '), 'منهای دو')
+        assert_equal(words(-1.1, negative='منهای '), 'منهای یک و یک دهم')
+        assert_equal(words('-1.1', negative='منهای '), 'منهای یک و یک دهم')
+        assert_equal(
+            words(-1.1e-06, negative='منهای '),
+            'منهای یک و یک دهم در ده به توان منهای شش',
+        )
+        assert_equal(
+            words('-1/2', negative='منهای '),
+            'منهای یک دوم',
+        )
+        assert_equal(
+            words(Fraction(1, -2), negative='منهای '),
+            'منهای یک دوم',
+        )
+
+    def test_fraction_separator(self):
+        assert_equal = self.assertEqual
         assert_equal(
             words(
-                '1/2', fraction_separator=' تقسیم بر ',
+                '1/2',
+                fraction_separator=' تقسیم بر ',
                 ordinal_denominator=False,
             ),
             'یک تقسیم بر دو',
         )
         assert_equal(
+            words(
+                Fraction(4, -8),
+                negative='منهای ',
+                fraction_separator=' تقسیم بر ',
+                ordinal_denominator=False,
+            ),
+            'منهای یک تقسیم بر دو',
+        )
+
+    def test_scientific_separator(self):
+        assert_equal = self.assertEqual
+        assert_equal(
             words(1.1e-9, scientific_separator=' ضربدر ده به قوهٔ '),
+            'یک و یک دهم ضربدر ده به قوهٔ منفی نه',
+        )
+        assert_equal(
+            words('1.1e-9', scientific_separator=' ضربدر ده به قوهٔ '),
             'یک و یک دهم ضربدر ده به قوهٔ منفی نه',
         )
 

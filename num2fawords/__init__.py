@@ -142,7 +142,7 @@ def _(
         sign = positive
         number = number[1:]
     else:
-        sign = positive
+        sign = ''
 
     numerator, e, denominator = number.partition('/')
 
@@ -151,19 +151,35 @@ def _(
             return (
                 sign
                 + _exp_words(
-                    numerator, decimal_separator, scientific_separator
+                    numerator,
+                    decimal_separator=decimal_separator,
+                    scientific_separator=scientific_separator,
                 )
                 + fraction_separator
                 + ordinal_words(denominator)
             )
         return (
             sign
-            + _exp_words(numerator, decimal_separator, scientific_separator)
+            + _exp_words(
+                numerator,
+                positive=positive,
+                negative=negative,
+                decimal_separator=decimal_separator,
+                scientific_separator=scientific_separator,
+            )
             + fraction_separator
-            + _exp_words(denominator, decimal_separator, scientific_separator)
+            + _exp_words(
+                denominator,
+                decimal_separator=decimal_separator,
+                scientific_separator=scientific_separator,
+            )
         )
     return sign + _exp_words(
-        numerator, decimal_separator, scientific_separator
+        numerator,
+        positive=positive,
+        negative=negative,
+        decimal_separator=decimal_separator,
+        scientific_separator=scientific_separator,
     )
 
 
@@ -196,7 +212,7 @@ def _(
         sign
         + _natural_words(numerator)
         + fraction_separator
-        + _natural_words(number.denominator)
+        + _natural_words(str(number.denominator))
     )
 
 
@@ -236,27 +252,47 @@ def _(
     str_num = str(number)
     if number < 0:
         return negative + _exp_words(
-            str_num[1:], decimal_separator, scientific_separator
+            str_num[1:],
+            positive=positive,
+            negative=negative,
+            decimal_separator=decimal_separator,
+            scientific_separator=scientific_separator,
         )
     return positive + _exp_words(
-        str_num, decimal_separator, scientific_separator
+        str_num,
+        positive=positive,
+        negative=negative,
+        decimal_separator=decimal_separator,
+        scientific_separator=scientific_separator,
     )
 
 
 def _exp_words(
     number: str,
-    decimal_separator: str,
-    scientific_separator: str,
+    positive: str='',
+    negative: str='منفی ',
+    decimal_separator: str=' و ',
+    fraction_separator: str=' ',
+    ordinal_denominator: bool=True,
+    scientific_separator: str = ' در ده به توان ',
 ) -> str:
     # exponent
     base, e, exponent = number.partition('e')
     if exponent:
         return (
-            _point_words(base, decimal_separator)
+            _point_words(base, decimal_separator=decimal_separator)
             + scientific_separator
-            + words(int(exponent), decimal_separator)
+            + words(
+                int(exponent),
+                positive,
+                negative,
+                decimal_separator,
+                fraction_separator,
+                ordinal_denominator,
+                scientific_separator,
+            )
         )
-    return _point_words(base, decimal_separator)
+    return _point_words(base, decimal_separator=decimal_separator)
 
 
 def _point_words(
