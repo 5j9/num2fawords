@@ -115,6 +115,7 @@ def words(
     ordinal_denominator: bool=True,
     scientific_form: str = ' ضربدر ده به توان ',
 ) -> str:
+    """Return the word form of number."""
     raise TypeError('invalid input type for words function', number)
 
 
@@ -129,7 +130,6 @@ def _(
     ordinal_denominator: bool=True,
     scientific_form: str = ' ضربدر ده به توان ',
 ) -> str:
-    """Return the word form of number."""
     # Normalize the str
     number = str(number).strip().translate(_NORMALIZATION_TABLE)
 
@@ -305,9 +305,13 @@ def _natural_words(str_num: str) -> str:
     return natural_words
 
 
-def ordinal_words(number: _Union[int, str])-> str:
-    """Return the ordinal_words form of the number converted to words."""
-    w = words(int(number))
+def ordinal_words(
+    number: _Union[int, str],
+    positive: str = '',
+    negative: str = 'منفی ',
+)-> str:
+    """Return the number converted to ordinal words form."""
+    w = words(int(number), positive, negative)
     if w[-2:] == 'سه':
         return w[:-2] + 'سوم'
     return w + 'م'
