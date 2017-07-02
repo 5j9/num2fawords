@@ -119,24 +119,24 @@ class Number2FarsiWord(TestCase):
         assert_equal(words(0.1001), 'یک هزار و یک ده هزارم')
         assert_equal(words(5.45), 'پنج و چهل و پنج صدم')
 
-        assert_equal(words(0.000001), 'یک ضربدر ده به توان منفی شش')
+        assert_equal(words(0.000001), 'یک در ده به توان منفی شش')
         assert_equal(words('0.000001'), 'یک میلیونم')
 
         assert_equal(
             words(0.0000011),
-            'یک و یک دهم ضربدر ده به توان منفی شش'
+            'یک و یک دهم در ده به توان منفی شش'
         )
         assert_equal(words('0.0000011'), 'یازده ده میلیونم',)
 
         assert_equal(
             words(0.00000111),
-            'یک و یازده صدم ضربدر ده به توان منفی شش',
+            'یک و یازده صدم در ده به توان منفی شش',
         )
         assert_equal(words('0.00000111'), 'یکصد و یازده صد میلیونم')
 
         assert_equal(
             words(0.000001111),
-            'یک و یکصد و یازده هزارم ضربدر ده به توان منفی شش',
+            'یک و یکصد و یازده هزارم در ده به توان منفی شش',
         )
         assert_equal(
             words('0.000001111'), 'یک هزار و یکصد و یازده میلیاردم'
@@ -185,7 +185,21 @@ class Number2FarsiWord(TestCase):
         assert_equal = self.assertEqual
         assert_equal(words(-1.1), 'منفی یک و یک دهم')
 
-# Todo: test params
+    def test_word_arguments(self):
+        assert_equal = self.assertEqual
+        assert_equal(words(7, positive='مثبت '), 'مثبت هفت')
+        assert_equal(words(-2, negative='منهای '), 'منهای دو')
+        assert_equal(
+            words(
+                '1/2', fraction_separator=' تقسیم بر ',
+                ordinal_denominator=False,
+            ),
+            'یک تقسیم بر دو',
+        )
+        assert_equal(
+            words(1.1e-9, scientific_separator=' ضربدر ده به قوهٔ '),
+            'یک و یک دهم ضربدر ده به قوهٔ منفی نه',
+        )
 
 
 if __name__ == '__main__':
