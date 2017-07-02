@@ -168,10 +168,25 @@ class Number2FarsiWord(TestCase):
         self.assertRaises(TypeError, words, [])
 
     def test_fractions(self):
-        self.assertEqual(words(Fraction(16, -10)), 'منفی هشت پنجم')
+        assert_equal = self.assertEqual
+        assert_equal(words(Fraction(16, -10)), 'منفی هشت پنجم')
+        assert_equal(words(Fraction(Decimal('1.1'))), 'یازده دهم')
+        assert_equal(words('-8/4'), 'منفی هشت چهارم')
+        assert_equal(words(Fraction(0, 1)), 'صفر یکم')
+        assert_equal(words('0/1'), 'صفر یکم')
 
+    def test_persian_numers(self):
+        assert_equal = self.assertEqual
+        assert_equal(words('۱'), 'یک')
+        assert_equal(words('۱٫۱'), 'یک و یک دهم')
+        assert_equal(words('۱٬۰۰۰'), 'یک هزار')
 
-# Todo: add test for persian numbers.
+    def test_negative_float(self):
+        assert_equal = self.assertEqual
+        assert_equal(words(-1.1), 'منفی یک و یک دهم')
+
+# Todo: test params
+
 
 if __name__ == '__main__':
     main()

@@ -2,13 +2,13 @@
 
 from decimal import Decimal
 from fractions import Fraction
-from itertools import chain as _chain
 try:
     from functools import singledispatch as _singledispatch
 except ImportError:
     # sys.version_info < (3, 4)
     # noinspection PyUnresolvedReferences
     from singledispatch import singledispatch as _singledispatch
+from itertools import chain as _chain
 from typing import Union as _Union
 
 
@@ -88,20 +88,20 @@ DECIMAL_PLACES.extend(_chain.from_iterable(
 _NORMALIZATION_TABLE = str.maketrans('E٫', 'e.', '_٬,')
 
 
-def _three_digit_words(threedigit: str) -> str:
+def _three_digit_words(number: int) -> str:
     """Return the word representation of threedigit."""
-    h, t, o = threedigit
-    if h == '0' or threedigit[1:] == '00':
-        w = HUNDREDS[int(h)]
+    h, t, o = number // 100, number % 100 // 10, number % 10
+    if h == 0 or (t == o == 0):
+        w = HUNDREDS[h]
     else:
-        w = HUNDREDS[int(h)] + ' و '
-    if t == '1':
-        return w + TEN_TO_TWENTY[int(o)]
-    if o == '0' or t == '0':
-        w += TENS[int(t)]
+        w = HUNDREDS[h] + ' و '
+    if t == 1:
+        return w + TEN_TO_TWENTY[o]
+    if o == 0 or t == 0:
+        w += TENS[t]
     else:
-        w += TENS[int(t)] + ' و '
-    return w + ONES[int(o)]
+        w += TENS[t] + ' و '
+    return w + ONES[o]
 
 
 # noinspection PyUnusedLocal
@@ -112,19 +112,22 @@ def words(
     minus: str='منفی ',
     decimal_separator: str=' و ',
     fraction_separator: str=' ',
-    ordinal_denominator: str=' و ',
+    ordinal_denominator: bool=True,
+    scientific_form: str = ' ضربدر ده به توان ',
 ) -> str:
     raise TypeError('invalid input type for words function', number)
 
 
 @words.register(str)
+@words.register(Decimal)
 def _(
     number: str,
     plus: str='',
     minus: str='منفی ',
     decimal_separator: str=' و ',
     fraction_separator: str=' ',
-    ordinal_denominator: str=' و ',
+    ordinal_denominator: bool=True,
+    scientific_form: str = ' ضربدر ده به توان ',
 ) -> str:
     """Return the word form of number."""
     # Normalize the str
@@ -147,59 +150,49 @@ def _(
         if ordinal_denominator:
             return (
                 sign
-                + _no_fraction_words(numerator, decimal_separator)
+                + _exp_words(numerator, decimal_separator, scientific_form)
                 + fraction_separator
                 + ordinal_words(denominator)
             )
         return (
             sign
-            + _no_fraction_words(numerator, decimal_separator)
+            + _exp_words(numerator, decimal_separator, scientific_form)
             + fraction_separator
-            + _no_fraction_words(denominator, decimal_separator)
+            + _exp_words(denominator, decimal_separator, scientific_form)
         )
-    return sign + _no_fraction_words(numerator, decimal_separator)
+    return sign + _exp_words(numerator, decimal_separator, scientific_form)
 
 
-@words.register(Decimal)
-def _(
-    number: Decimal,
-    plus: str = '',
-    minus: str = 'منفی ',
-    decimal_separator: str = ' و ',
-    fraction_separator: str = ' ',
-    ordinal_denominator: str = ' و ',
-) -> str:
-    return words.registry[str](
-        str(number),
-        plus,
-        minus,
-        decimal_separator,
-        fraction_separator,
-        ordinal_denominator,
-    )
-
-
+# noinspection PyUnusedLocal
 @words.register(Fraction)
 def _(
     number: Fraction,
-    plus: str = '',
-    minus: str = 'منفی ',
-    decimal_separator: str = ' و ',
-    fraction_separator: str = ' ',
-    ordinal_denominator: str = ' و ',
+    plus: str='',
+    minus: str='منفی ',
+    decimal_separator: str=' و ',
+    fraction_separator: str=' ',
+    ordinal_denominator: bool=True,
+    scientific_form: str = ' ضربدر ده به توان ',
 ) -> str:
     numerator = number.numerator
     if numerator < 0:
         sign = minus
-        numerator = str(number.numerator)[1:]
+        numerator = str(numerator)[1:]
     else:
         sign = ''
-        numerator = str(number.numerator)
+        numerator = str(numerator)
+    if ordinal_denominator:
+        return (
+            sign
+            + _natural_words(numerator)
+            + fraction_separator
+            + ordinal_words(number.denominator)
+        )
     return (
         sign
-        + _no_fraction_words(numerator, decimal_separator)
+        + _natural_words(numerator)
         + fraction_separator
-        + ordinal_words(number.denominator)
+        + _natural_words(number.denominator)
     )
 
 
@@ -207,11 +200,12 @@ def _(
 @words.register(int)
 def _(
     number: int,
-    plus: str = '',
-    minus: str = 'منفی ',
-    decimal_separator: str = ' و ',
-    fraction_separator: str = ' ',
-    ordinal_denominator: str = ' و ',
+    plus: str='',
+    minus: str='منفی ',
+    decimal_separator: str=' و ',
+    fraction_separator: str=' ',
+    ordinal_denominator: bool=True,
+    scientific_form: str = ' ضربدر ده به توان ',
 ) -> str:
     """Return the fa-word form for the given int."""
     if number == 0:
@@ -225,37 +219,41 @@ def _(
 @words.register(float)
 def _(
     number: float,
-    plus: str = '',
-    minus: str = 'منفی ',
-    decimal_separator: str = ' و ',
-    fraction_separator: str = ' ',
-    ordinal_denominator: str = ' و ',
+    plus: str='',
+    minus: str='منفی ',
+    decimal_separator: str=' و ',
+    fraction_separator: str=' ',
+    ordinal_denominator: bool=True,
+    scientific_form: str = ' ضربدر ده به توان ',
 ) -> str:
     """Return the fa-word form for the given float."""
     if number == 0:
         return 'صفر'
     str_num = str(number)
     if number < 0:
-        return _no_fraction_words(str_num[1:], decimal_separator)
-    return _no_fraction_words(str_num, decimal_separator)
+        return minus + _exp_words(
+            str_num[1:], decimal_separator, scientific_form
+        )
+    return _exp_words(str_num, decimal_separator, scientific_form)
 
 
-def _no_fraction_words(
+def _exp_words(
     number: str,
     decimal_separator: str,
+    scientific_form: str,
 ) -> str:
     # exponent
     base, e, exponent = number.partition('e')
     if exponent:
         return (
-            _no_exponent_words(base, decimal_separator)
-            + ' ضربدر ده به توان '
+            _point_words(base, decimal_separator)
+            + scientific_form
             + words(int(exponent), decimal_separator)
         )
-    return _no_exponent_words(base, decimal_separator)
+    return _point_words(base, decimal_separator)
 
 
-def _no_exponent_words(
+def _point_words(
     number: str,
     decimal_separator: str,
 ) -> str:
@@ -276,24 +274,24 @@ def _no_exponent_words(
     return _natural_words(before_p)
 
 
-def _natural_words(number: str) -> str:
-    if number == '0':
+def _natural_words(str_num: str) -> str:
+    if str_num == '0':
         return 'صفر'
-    length = len(number)
+    length = len(str_num)
     if length > len(CLASSES) * 3:
         raise ValueError('out of range')
 
     modulo_3 = length % 3
     if modulo_3:
-        number = '0' * (3 - modulo_3) + number
+        str_num = '0' * (3 - modulo_3) + str_num
         length += 3 - modulo_3
 
     groups = length // 3
     group = groups
     natural_words = ''
     while group > 0:
-        three_digit = number[group * 3 - 3:group * 3]
-        word3 = _three_digit_words(three_digit)
+        three_digit = str_num[group * 3 - 3:group * 3]
+        word3 = _three_digit_words(int(three_digit))
         if word3 and group != groups:
             if natural_words:
                 natural_words = word3 + CLASSES[groups - group] + \
@@ -309,7 +307,7 @@ def _natural_words(number: str) -> str:
 
 def ordinal_words(number: _Union[int, str])-> str:
     """Return the ordinal_words form of the number converted to words."""
-    w = words(number)
+    w = words(int(number))
     if w[-2:] == 'سه':
         return w[:-2] + 'سوم'
     return w + 'م'
