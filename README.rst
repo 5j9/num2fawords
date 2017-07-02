@@ -67,6 +67,8 @@ Some people prefer, for example, "صد و هفتاد" over its other form "یک�
 
 Some examples for other arguments of `words`:
 
+.. code-block:: python
+
 	>>> words(7, positive='مثبت ')
 	'مثبت هفت'
 	>>> words(-2, negative='منهای ')
@@ -80,4 +82,6 @@ Some examples for other arguments of `words`:
 	>>> words(1.1e-9, scientific_separator=' ضربدر ده به قوهٔ ')
 	'یک و یک دهم ضربدر ده به قوهٔ منفی نه'
 
-Of-course many of the above arguments can be combined together.
+Of-course the above arguments can be used together.
+
+That's all. Enjoy!
