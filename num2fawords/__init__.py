@@ -108,8 +108,8 @@ def _three_digit_words(number: int) -> str:
 @_singledispatch
 def words(
     number: _Union[int, float, str, Decimal, Fraction],
-    plus: str='',
-    minus: str='منفی ',
+    positive: str='',
+    negative: str='منفی ',
     decimal_separator: str=' و ',
     fraction_separator: str=' ',
     ordinal_denominator: bool=True,
@@ -122,8 +122,8 @@ def words(
 @words.register(Decimal)
 def _(
     number: str,
-    plus: str='',
-    minus: str='منفی ',
+    positive: str='',
+    negative: str='منفی ',
     decimal_separator: str=' و ',
     fraction_separator: str=' ',
     ordinal_denominator: bool=True,
@@ -136,13 +136,13 @@ def _(
     # sign
     c0 = number[0]
     if c0 == '-':
-        sign = minus
+        sign = negative
         number = number[1:]
     elif c0 == '+':
-        sign = plus
+        sign = positive
         number = number[1:]
     else:
-        sign = ''
+        sign = positive
 
     numerator, e, denominator = number.partition('/')
 
@@ -167,8 +167,8 @@ def _(
 @words.register(Fraction)
 def _(
     number: Fraction,
-    plus: str='',
-    minus: str='منفی ',
+    positive: str='',
+    negative: str='منفی ',
     decimal_separator: str=' و ',
     fraction_separator: str=' ',
     ordinal_denominator: bool=True,
@@ -176,10 +176,10 @@ def _(
 ) -> str:
     numerator = number.numerator
     if numerator < 0:
-        sign = minus
+        sign = negative
         numerator = str(numerator)[1:]
     else:
-        sign = ''
+        sign = positive
         numerator = str(numerator)
     if ordinal_denominator:
         return (
@@ -200,8 +200,8 @@ def _(
 @words.register(int)
 def _(
     number: int,
-    plus: str='',
-    minus: str='منفی ',
+    positive: str='',
+    negative: str='منفی ',
     decimal_separator: str=' و ',
     fraction_separator: str=' ',
     ordinal_denominator: bool=True,
@@ -211,16 +211,16 @@ def _(
     if number == 0:
         return 'صفر'
     if number < 0:
-        return minus + _natural_words(str(number)[1:])
-    return _natural_words(str(number))
+        return negative + _natural_words(str(number)[1:])
+    return positive + _natural_words(str(number))
 
 
 # noinspection PyUnusedLocal
 @words.register(float)
 def _(
     number: float,
-    plus: str='',
-    minus: str='منفی ',
+    positive: str='',
+    negative: str='منفی ',
     decimal_separator: str=' و ',
     fraction_separator: str=' ',
     ordinal_denominator: bool=True,
@@ -231,10 +231,10 @@ def _(
         return 'صفر'
     str_num = str(number)
     if number < 0:
-        return minus + _exp_words(
+        return negative + _exp_words(
             str_num[1:], decimal_separator, scientific_form
         )
-    return _exp_words(str_num, decimal_separator, scientific_form)
+    return positive + _exp_words(str_num, decimal_separator, scientific_form)
 
 
 def _exp_words(
