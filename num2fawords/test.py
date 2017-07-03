@@ -119,6 +119,12 @@ class Number2FarsiWord(TestCase):
         assert_equal(words(0.001), 'یک هزارم')
         assert_equal(words(0.1001), 'یک هزار و یک ده هزارم')
         assert_equal(words(5.45), 'پنج و چهل و پنج صدم')
+        assert_equal(words(1e-3), 'یک هزارم')
+        assert_equal(words(1E-3), 'یک هزارم')
+        assert_equal(words('1e-3'), 'یک در ده به توان منفی سه')
+        assert_equal(words('1E-3'), 'یک در ده به توان منفی سه')
+        assert_equal(words(1e-6), 'یک در ده به توان منفی شش')
+        assert_equal(words(1E-6), 'یک در ده به توان منفی شش')
 
         assert_equal(words(0.000001), 'یک در ده به توان منفی شش')
         assert_equal(words('0.000001'), 'یک میلیونم')
@@ -151,9 +157,12 @@ class Number2FarsiWord(TestCase):
         )
 
     def test_str_input(self):
-        self.assertEqual(words('42'), 'چهل و دو')
-        self.assertEqual(words('3.14'), 'سه و چهارده صدم')
-        self.assertEqual(words('+1.1', positive='مثبت '), 'مثبت یک و یک دهم')
+        assert_equal = self.assertEqual
+        assert_equal(words('42'), 'چهل و دو')
+        assert_equal(words('3.14'), 'سه و چهارده صدم')
+        assert_equal(words('+1.1', positive='مثبت '), 'مثبت یک و یک دهم')
+        assert_equal(words('1e2'), 'یک در ده به توان دو')
+        assert_equal(words('1E2'), 'یک در ده به توان دو')
 
     def test_decimal_input(self):
         self.assertEqual(words(Decimal('3.0')), 'سه')
@@ -177,7 +186,7 @@ class Number2FarsiWord(TestCase):
         assert_equal(words(Fraction(0, 1)), 'صفر یکم')
         assert_equal(words('0/1'), 'صفر یکم')
 
-    def test_persian_numers(self):
+    def test_persian_numbers(self):
         assert_equal = self.assertEqual
         assert_equal(words('۱'), 'یک')
         assert_equal(words('۱٫۱'), 'یک و یک دهم')
