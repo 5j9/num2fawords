@@ -86,7 +86,7 @@ Some examples for other arguments of `words`:
 
 Of-course the above arguments can be used together.
 
-If you prefer to change the default argument values, use change_func_defaults:
+If you prefer to change the default argument values once and for all, use the `change_defaults` function:
 
 .. code-block:: python
 
