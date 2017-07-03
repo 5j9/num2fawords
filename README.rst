@@ -75,7 +75,7 @@ Some examples for other arguments of `words`:
 	'مثبت هفت'
 	>>> words(-2, negative='منهای ')
 	'منهای دو'
-	>>> words('1/2')
+	>>> words('۱/۲')
 	'یک دوم'
 	>>> words('1/2', fraction_separator=' تقسیم بر ', ordinal_denominator=False)
 	'یک تقسیم بر دو'
@@ -85,5 +85,14 @@ Some examples for other arguments of `words`:
 	'یک و یک دهم ضربدر ده به قوهٔ منفی نه'
 
 Of-course the above arguments can be used together.
+
+If you prefer to change the default argument values, use change_func_defaults:
+
+.. code-block:: python
+
+	>>> from num2fawords import change_defaults, words
+	>>> change_defaults(fraction_separator=' بخش بر ', ordinal_denominator=False)
+	>>> words('۱/۴')
+	'یک بخش بر چهار'
 
 That's all. Enjoy!

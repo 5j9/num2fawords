@@ -89,7 +89,7 @@ _NORMALIZATION_TABLE = str.maketrans('E٫', 'e.', '_٬,')
 
 
 def _three_digit_words(number: int) -> str:
-    """Return the word representation of threedigit."""
+    """Return the word representation of 0 < number < 1000."""
     h, t, o = number // 100, number % 100 // 10, number % 10
     if h == 0 or (t == o == 0):
         w = HUNDREDS[h]
@@ -113,9 +113,15 @@ def words(
     decimal_separator: str=' و ',
     fraction_separator: str=' ',
     ordinal_denominator: bool=True,
-    scientific_separator: str = ' در ده به توان ',
+    scientific_separator: str=' در ده به توان ',
 ) -> str:
-    """Return the word form of number."""
+    """Return the word form of number.
+
+    If input is a string it should be in the form of a valid Python
+    representation for one the other accepted types. The only exception is
+    that digits can be in Persian. For example words('۴۲') is valid.
+
+    """
     raise TypeError('invalid input type for words function', number)
 
 
@@ -128,7 +134,7 @@ def _(
     decimal_separator: str=' و ',
     fraction_separator: str=' ',
     ordinal_denominator: bool=True,
-    scientific_separator: str = ' در ده به توان ',
+    scientific_separator: str=' در ده به توان ',
 ) -> str:
     # Normalize the str
     number = str(number).strip().translate(_NORMALIZATION_TABLE)
@@ -138,11 +144,13 @@ def _(
     if c0 == '-':
         sign = negative
         number = number[1:]
+    elif c0 == '0':
+        sign = ''
     elif c0 == '+':
         sign = positive
         number = number[1:]
     else:
-        sign = ''
+        sign = positive
 
     numerator, e, denominator = number.partition('/')
 
@@ -150,36 +158,18 @@ def _(
         if ordinal_denominator:
             return (
                 sign
-                + _exp_words(
-                    numerator,
-                    decimal_separator=decimal_separator,
-                    scientific_separator=scientific_separator,
-                )
+                + _natural_words(numerator)
                 + fraction_separator
                 + ordinal_words(denominator)
             )
         return (
             sign
-            + _exp_words(
-                numerator,
-                positive=positive,
-                negative=negative,
-                decimal_separator=decimal_separator,
-                scientific_separator=scientific_separator,
-            )
+            + _natural_words(numerator)
             + fraction_separator
-            + _exp_words(
-                denominator,
-                decimal_separator=decimal_separator,
-                scientific_separator=scientific_separator,
-            )
+            + _natural_words(denominator)
         )
     return sign + _exp_words(
-        numerator,
-        positive=positive,
-        negative=negative,
-        decimal_separator=decimal_separator,
-        scientific_separator=scientific_separator,
+        numerator, positive, negative, decimal_separator, scientific_separator,
     )
 
 
@@ -192,7 +182,7 @@ def _(
     decimal_separator: str=' و ',
     fraction_separator: str=' ',
     ordinal_denominator: bool=True,
-    scientific_separator: str = ' در ده به توان ',
+    scientific_separator: str=' در ده به توان ',
 ) -> str:
     numerator = number.numerator
     if numerator < 0:
@@ -206,13 +196,13 @@ def _(
             sign
             + _natural_words(numerator)
             + fraction_separator
-            + ordinal_words(number.denominator)
+            + ordinal_words(number.denominator)  # denominator has no sign
         )
     return (
         sign
         + _natural_words(numerator)
         + fraction_separator
-        + _natural_words(str(number.denominator))
+        + _natural_words(str(number.denominator))  # denominator has no sign
     )
 
 
@@ -225,7 +215,7 @@ def _(
     decimal_separator: str=' و ',
     fraction_separator: str=' ',
     ordinal_denominator: bool=True,
-    scientific_separator: str = ' در ده به توان ',
+    scientific_separator: str=' در ده به توان ',
 ) -> str:
     """Return the fa-word form for the given int."""
     if number == 0:
@@ -244,7 +234,7 @@ def _(
     decimal_separator: str=' و ',
     fraction_separator: str=' ',
     ordinal_denominator: bool=True,
-    scientific_separator: str = ' در ده به توان ',
+    scientific_separator: str=' در ده به توان ',
 ) -> str:
     """Return the fa-word form for the given float."""
     if number == 0:
@@ -253,28 +243,22 @@ def _(
     if number < 0:
         return negative + _exp_words(
             str_num[1:],
-            positive=positive,
-            negative=negative,
-            decimal_separator=decimal_separator,
-            scientific_separator=scientific_separator,
+            positive,
+            negative,
+            decimal_separator,
+            scientific_separator,
         )
     return positive + _exp_words(
-        str_num,
-        positive=positive,
-        negative=negative,
-        decimal_separator=decimal_separator,
-        scientific_separator=scientific_separator,
+        str_num, positive, negative, decimal_separator, scientific_separator,
     )
 
 
 def _exp_words(
     number: str,
-    positive: str='',
-    negative: str='منفی ',
-    decimal_separator: str=' و ',
-    fraction_separator: str=' ',
-    ordinal_denominator: bool=True,
-    scientific_separator: str = ' در ده به توان ',
+    positive: str,
+    negative: str,
+    decimal_separator: str,
+    scientific_separator: str,
 ) -> str:
     # exponent
     base, e, exponent = number.partition('e')
@@ -282,15 +266,7 @@ def _exp_words(
         return (
             _point_words(base, decimal_separator=decimal_separator)
             + scientific_separator
-            + words(
-                int(exponent),
-                positive,
-                negative,
-                decimal_separator,
-                fraction_separator,
-                ordinal_denominator,
-                scientific_separator,
-            )
+            + words(int(exponent), positive, negative)
         )
     return _point_words(base, decimal_separator=decimal_separator)
 
@@ -349,11 +325,30 @@ def _natural_words(str_num: str) -> str:
 
 def ordinal_words(
     number: _Union[int, str],
-    positive: str = '',
-    negative: str = 'منفی ',
+    positive: str='',
+    negative: str='منفی ',
 )-> str:
     """Return the number converted to ordinal words form."""
     w = words(int(number), positive, negative)
     if w[-2:] == 'سه':
         return w[:-2] + 'سوم'
     return w + 'م'
+
+
+def change_defaults(
+    positive: str='',
+    negative: str='منفی ',
+    decimal_separator: str=' و ',
+    fraction_separator: str=' ',
+    ordinal_denominator: bool=True,
+    scientific_separator: str=' در ده به توان ',
+):
+    """The the default values for functions."""
+    defaults = (
+        positive, negative, decimal_separator, fraction_separator,
+        ordinal_denominator, scientific_separator,
+    )
+    change_defaults.__defaults__ = defaults
+    for func in words.registry.values():
+        func.__defaults__ = defaults
+    ordinal_words.__defaults__ = (positive, negative)

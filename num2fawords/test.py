@@ -3,7 +3,7 @@ from decimal import Decimal
 from math import pi
 from unittest import TestCase, main
 
-from num2fawords import words, ordinal_words
+from num2fawords import words, ordinal_words, change_defaults
 
 
 class Number2FarsiWord(TestCase):
@@ -206,7 +206,7 @@ class Number2FarsiWord(TestCase):
         )
         assert_equal(
             words('1.1e+9', positive='مثبت '),
-            'یک و یک دهم در ده به توان مثبت نه',
+            'مثبت یک و یک دهم در ده به توان مثبت نه',
         )
         assert_equal(
             words(1.1e+9, positive='مثبت '),  # str(-1.1e+9) == 1100000000.0
@@ -281,6 +281,23 @@ class Number2FarsiWord(TestCase):
             ),
             'یک تقسیم بر دو',
         )
+
+    def test_change_defaults(self):
+        assert_equal = self.assertEqual
+        change_defaults('مثبت ', 'منهای ')
+        assert_equal(words('-۹'), 'منهای نه')
+        assert_equal(words('+۹'), 'مثبت نه')
+        change_defaults(decimal_separator=' ممیز ')
+        assert_equal(words(1.1), 'مثبت یک ممیز یک دهم')
+        change_defaults(fraction_separator=' روی ', ordinal_denominator=False)
+        assert_equal(words('-1/10'), 'منهای یک روی ده')
+        change_defaults(scientific_separator=' در ده به نمای ')
+        assert_equal(words('1e2'), 'مثبت یک در ده به نمای مثبت دو')
+        # Back to default
+        change_defaults('', 'منفی ', ' و ', ' ', True, ' در ده به توان ')
+        assert_equal(words(1.1), 'یک و یک دهم')
+        assert_equal(words('1/2'), 'یک دوم')
+        assert_equal(words('1e2'), 'یک در ده به توان دو')
 
 
 if __name__ == '__main__':
