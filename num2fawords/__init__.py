@@ -343,7 +343,7 @@ def change_defaults(
     ordinal_denominator: bool=True,
     scientific_separator: str=' در ده به توان ',
 ):
-    """The the default values for functions."""
+    """The the default values for words and ordinal_words functions."""
     defaults = (
         positive, negative, decimal_separator, fraction_separator,
         ordinal_denominator, scientific_separator,
