@@ -1,4 +1,4 @@
-"""Provide functions to convert a number (int) to Persian words."""
+"""Provide functions to convert a number to Persian words."""
 
 from decimal import Decimal
 from fractions import Fraction
