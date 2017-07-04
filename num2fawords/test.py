@@ -159,6 +159,7 @@ class Number2FarsiWord(TestCase):
     def test_str_input(self):
         assert_equal = self.assertEqual
         assert_equal(words('42'), 'چهل و دو')
+        assert_equal(words('\t\n 42 \n\t'), 'چهل و دو')
         assert_equal(words('3.14'), 'سه و چهارده صدم')
         assert_equal(words('+1.1', positive='مثبت '), 'مثبت یک و یک دهم')
         assert_equal(words('1e2'), 'یک در ده به توان دو')
