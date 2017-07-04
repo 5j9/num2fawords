@@ -8,7 +8,7 @@
 num2fawords
 ===========
 
-num2fawords is a highly customizable library which provides functions to convert a number (int, float, Decimal, Fraction, or str) into Persian word form.
+`num2fawords` is a highly customizable library which provides functions to convert a number (int, float, Decimal, Fraction, or str) into Persian word form.
 
 Installation
 ============
@@ -35,7 +35,7 @@ Usage
 
 Obviously, `words` is used to convert to word form and `ordinal_words` is for ordinal word from.
 
-Words also accept other common standard types:
+`words` also accepts other common standard types:
 
 .. code-block:: python
 
