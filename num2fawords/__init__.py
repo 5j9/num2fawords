@@ -85,7 +85,7 @@ DECIMAL_PLACES.extend(_chain.from_iterable(
     for i in (i + 'م' for i in CLASSES[1:])
 ))
 
-_NORMALIZATION_TABLE = str.maketrans('E٫', 'e.', '_٬,')
+_NORMALIZATION_TABLE = str.maketrans('E٫', 'e.', '_٬,+')
 
 
 def _three_digit_words(number: int) -> str:
@@ -118,8 +118,8 @@ def words(
     """Return the word form of number.
 
     If input is a string it should be in the form of a valid Python
-    representation for one the other accepted types. The only exception is
-    that digits can be in Persian. For example words('۴۲') is valid.
+    representation for one of the other accepted types. The only exceptions are
+    that digits can be in Persian, for example words('۴۲') is valid.
 
     """
     raise TypeError('invalid input type for words function', number)
@@ -146,9 +146,6 @@ def _(
         number = number[1:]
     elif c0 == '0':
         sign = ''
-    elif c0 == '+':
-        sign = positive
-        number = number[1:]
     else:
         sign = positive
 
