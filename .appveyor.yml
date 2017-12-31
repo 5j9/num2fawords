@@ -21,9 +21,8 @@ environment:
     - PYTHON: "C:\\Python36-x64"
 
 install:
-  - pip list
-  - pip install setuptools>=36.2.0
-  - pip install .
+  - "%PYTHON%\\python.exe -m pip install 'setuptools>=36.2.0'"
+  - "%PYTHON%\\python.exe -m pip install ."
 
 build: off
 
