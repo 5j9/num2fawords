@@ -22,7 +22,7 @@ environment:
 
 install:
   - "%PYTHON%\\python.exe -m pip list"
-  - "%PYTHON%\\python.exe -m pip install setuptools^>=36.2.1"
+  - "%PYTHON%\\python.exe -m pip install 'setuptools>=36.2.1'"
   - "%PYTHON%\\python.exe -m pip install ."
 
 build: off
