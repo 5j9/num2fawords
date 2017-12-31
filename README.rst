@@ -14,8 +14,8 @@ Installation
 ============
 
 - Python 3.3+ is required
-- If using Python 3.3 or 3.4, make sure `setuptools` is up-to-date (`pip install -U setuptools`)
-- `pip install num2fawords`
+- ``pip install setuptools>=36.2.0``
+- ``pip install num2fawords``
 
 Usage
 =====
