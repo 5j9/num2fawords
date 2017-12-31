@@ -5,7 +5,6 @@ from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
 from os import path
-from sys import version_info
 
 here = path.abspath(path.dirname(__file__))
 
@@ -13,9 +12,10 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
-install_requires = ['typing;python_version<"3.5"']
-if version_info < (3, 4):
-    install_requires.append('singledispatch')
+install_requires = [
+    'typing;python_version<"3.5"',
+    'singledispatch;python_version<"3.4"',
+]
 
 setup(
     name='num2fawords',
@@ -23,7 +23,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.0.dev1',
+    version='1.0.dev2',
 
     description='A tool to convert numbers (int, float) into Persian words',
     long_description=long_description,
