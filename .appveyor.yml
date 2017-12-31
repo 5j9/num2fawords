@@ -22,8 +22,8 @@ environment:
 
 install:
   - pip list
-  - pip install setuptools>=36.2.0"
-  - pip install ."
+  - pip install setuptools>=36.2.0
+  - pip install .
 
 build: off
 
