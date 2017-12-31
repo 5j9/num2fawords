@@ -13,9 +13,7 @@ num2fawords
 Installation
 ============
 
-Python 3.3+ is required.
-
-Install using `pip install num2fawords` command.
+Python 3.3+ is required. Make sure `setuptools` is up-to-date (`pip install -U setuptools`) and then `pip install num2fawords`.
 
 Usage
 =====
