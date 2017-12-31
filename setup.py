@@ -13,6 +13,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 install_requires = [
+    'setuptools>=36.2',
     'typing;python_version<"3.5"',
     'singledispatch;python_version<"3.4"',
 ]
