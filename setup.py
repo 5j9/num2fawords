@@ -10,7 +10,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='num2fawords',
-    version='1.1.dev1',
+    version='1.1',
     description='A tool to convert numbers (int, float) into Persian words',
     long_description=long_description,
     url='https://github.com/5j9/num2fawords',
