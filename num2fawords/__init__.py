@@ -108,12 +108,12 @@ def _three_digit_words(number: int) -> str:
 @_singledispatch
 def words(
     number: _Union[int, float, str, Decimal, Fraction],
-    positive: str='',
-    negative: str='منفی ',
-    decimal_separator: str=' و ',
-    fraction_separator: str=' ',
-    ordinal_denominator: bool=True,
-    scientific_separator: str=' در ده به توان ',
+    positive: str = '',
+    negative: str = 'منفی ',
+    decimal_separator: str = ' و ',
+    fraction_separator: str = ' ',
+    ordinal_denominator: bool = True,
+    scientific_separator: str = ' در ده به توان ',
 ) -> str:
     """Return the word form of number.
 
@@ -129,12 +129,12 @@ def words(
 @words.register(Decimal)
 def _(
     number: str,
-    positive: str='',
-    negative: str='منفی ',
-    decimal_separator: str=' و ',
-    fraction_separator: str=' ',
-    ordinal_denominator: bool=True,
-    scientific_separator: str=' در ده به توان ',
+    positive: str = '',
+    negative: str = 'منفی ',
+    decimal_separator: str = ' و ',
+    fraction_separator: str = ' ',
+    ordinal_denominator: bool = True,
+    scientific_separator: str = ' در ده به توان ',
 ) -> str:
     # Normalize the str
     number = str(number).strip().translate(_NORMALIZATION_TABLE)
@@ -174,12 +174,12 @@ def _(
 @words.register(Fraction)
 def _(
     number: Fraction,
-    positive: str='',
-    negative: str='منفی ',
-    decimal_separator: str=' و ',
-    fraction_separator: str=' ',
-    ordinal_denominator: bool=True,
-    scientific_separator: str=' در ده به توان ',
+    positive: str = '',
+    negative: str = 'منفی ',
+    decimal_separator: str = ' و ',
+    fraction_separator: str = ' ',
+    ordinal_denominator: bool = True,
+    scientific_separator: str = ' در ده به توان ',
 ) -> str:
     numerator = number.numerator
     if numerator < 0:
@@ -207,12 +207,12 @@ def _(
 @words.register(int)
 def _(
     number: int,
-    positive: str='',
-    negative: str='منفی ',
-    decimal_separator: str=' و ',
-    fraction_separator: str=' ',
-    ordinal_denominator: bool=True,
-    scientific_separator: str=' در ده به توان ',
+    positive: str = '',
+    negative: str = 'منفی ',
+    decimal_separator: str = ' و ',
+    fraction_separator: str = ' ',
+    ordinal_denominator: bool = True,
+    scientific_separator: str = ' در ده به توان ',
 ) -> str:
     """Return the fa-word form for the given int."""
     if number == 0:
@@ -226,12 +226,12 @@ def _(
 @words.register(float)
 def _(
     number: float,
-    positive: str='',
-    negative: str='منفی ',
-    decimal_separator: str=' و ',
-    fraction_separator: str=' ',
-    ordinal_denominator: bool=True,
-    scientific_separator: str=' در ده به توان ',
+    positive: str = '',
+    negative: str = 'منفی ',
+    decimal_separator: str = ' و ',
+    fraction_separator: str = ' ',
+    ordinal_denominator: bool = True,
+    scientific_separator: str = ' در ده به توان ',
 ) -> str:
     """Return the fa-word form for the given float."""
     if number == 0:
@@ -322,9 +322,9 @@ def _natural_words(str_num: str) -> str:
 
 def ordinal_words(
     number: _Union[int, str],
-    positive: str='',
-    negative: str='منفی ',
-)-> str:
+    positive: str = '',
+    negative: str = 'منفی ',
+) -> str:
     """Return the number converted to ordinal words form."""
     w = words(int(number), positive, negative)
     if w[-2:] == 'سه':
@@ -333,12 +333,12 @@ def ordinal_words(
 
 
 def change_defaults(
-    positive: str='',
-    negative: str='منفی ',
-    decimal_separator: str=' و ',
-    fraction_separator: str=' ',
-    ordinal_denominator: bool=True,
-    scientific_separator: str=' در ده به توان ',
+    positive: str = '',
+    negative: str = 'منفی ',
+    decimal_separator: str = ' و ',
+    fraction_separator: str = ' ',
+    ordinal_denominator: bool = True,
+    scientific_separator: str = ' در ده به توان ',
 ):
     """The the default values for words and ordinal_words functions."""
     defaults = (
