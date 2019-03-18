@@ -13,7 +13,7 @@ num2fawords
 Installation
 ============
 
-- Python 3.3+ is required
+- Python 3.4+ is required
 - ``pip install 'setuptools>=36.2.1'``
 - ``pip install num2fawords``
 

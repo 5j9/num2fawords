@@ -3,12 +3,10 @@ git:
 language: python
 install:
     - pip install 'setuptools>=36.2.1'
-    - pip install .
-    - pip install codecov
+    - pip install . codecov
 script:
-    - coverage run test/test_num2fawords.py
+    - coverage run test
 python:
-    - "3.3"
     - "3.4"
     - "3.5"
     - "3.6"

@@ -3,25 +3,17 @@
 environment:
 
   matrix:
-
-    # For Python versions available on Appveyor, see
-    # http://www.appveyor.com/docs/installed-software#python
-    # The list here is complete (excluding Python 2.6, which
-    # isn't covered by this document) at the time of writing.
-
-    - PYTHON: "C:\\Python33"
     - PYTHON: "C:\\Python34"
     - PYTHON: "C:\\Python35"
     - PYTHON: "C:\\Python36"
-    - PYTHON: "C:\\Python33-x64"
-      DISTUTILS_USE_SDK: "1"
+    - PYTHON: "C:\\Python37"
     - PYTHON: "C:\\Python34-x64"
       DISTUTILS_USE_SDK: "1"
     - PYTHON: "C:\\Python35-x64"
     - PYTHON: "C:\\Python36-x64"
+    - PYTHON: "C:\\Python37-x64"
 
 install:
-  - "%PYTHON%\\python.exe -m pip list"
   - '%PYTHON%\\python.exe -m pip install "setuptools>=36.2.1"'
   - "%PYTHON%\\python.exe -m pip install ."
 
@@ -37,7 +29,7 @@ test_script:
   # to put the Python version you want to use on PATH.
   #- "build.cmd %PYTHON%\\python.exe setup.py test"
   - "cd num2fawords"
-  - "%PYTHON%\\python.exe -m num2fawords.test"
+  - "%PYTHON%\\python.exe test"
 
 after_test:
   # This step builds your wheels.
