@@ -301,5 +301,5 @@ class Number2FarsiWord(TestCase):
         assert_equal(words('1e2'), 'یک در ده به توان دو')
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     main()

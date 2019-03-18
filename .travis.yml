@@ -6,8 +6,7 @@ install:
     - pip install .
     - pip install codecov
 script:
-    - cd num2fawords
-    - coverage run test.py
+    - coverage run test/test_num2fawords.py
 python:
     - "3.3"
     - "3.4"
