@@ -1,11 +1,10 @@
 """A setuptools based setup module."""
 
-from os import path
+from os.path import dirname, abspath, join
 from setuptools import setup, find_packages
 
-here = path.abspath(path.dirname(__file__))
-
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+here = abspath(dirname(__file__))
+with open(join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
@@ -39,4 +38,5 @@ setup(
         'typing;python_version<"3.5"',
         'singledispatch;python_version<"3.4"',
     ],
+    zip_safe=True,
 )
