@@ -25,7 +25,6 @@ setup(
         'GNU General Public License v3 or later (GPLv3+)',
         'Natural Language :: English',
         'Natural Language :: Persian',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
@@ -36,7 +35,6 @@ setup(
     packages=find_packages(),
     install_requires=[
         'typing;python_version<"3.5"',
-        'singledispatch;python_version<"3.4"',
     ],
     zip_safe=True,
 )
