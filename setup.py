@@ -9,7 +9,7 @@ with open(join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='num2fawords',
-    version='1.3.dev1',
+    version='2.0.dev0',
     description='A library to convert numbers (ints, floats, and other '
                 'standard numerical types) into Persian words.',
     long_description=long_description,
